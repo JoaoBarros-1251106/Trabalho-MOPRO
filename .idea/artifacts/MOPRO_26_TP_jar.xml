@@ -2,7 +2,7 @@
   <artifact type="jar" name="MOPRO_26_TP:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/MOPRO_26_TP_jar</output-path>
     <root id="archive" name="MOPRO_26_TP.jar">
-      <element id="module-output" name="MOPRO_26_TP" />
+      <element id="module-output" name="MOPRO_TP_GRUPO01_1DA" />
     </root>
   </artifact>
 </component>

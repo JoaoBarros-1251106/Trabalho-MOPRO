@@ -11,10 +11,28 @@ public class Ator {
         this.dataNascimento = dataNascimento;
     }
 
+    public String getNome() {
+
+        return nome;
+    }
+    public String getDataNascimento() {
+
+        return dataNascimento;
+    }
+
+    public boolean temNome(String nome) {
+        return this.nome.equalsIgnoreCase(nome);
+    }
+
     @Override
     public String toString() {
         return nome + " [" + dataNascimento + "]";
     }
 
-    public boolean temNome(String nome) {return this.nome.equals(nome);}
+    @Override
+    public boolean correspondePesquisa(String texto){
+        return nome.toUpperCase().contains(texto.toLowerCase());
+    }
+
+
 }
