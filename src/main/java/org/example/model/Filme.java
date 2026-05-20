@@ -3,7 +3,7 @@ package org.example.model;
 
 import java.util.ArrayList;
 
-public class Filme extends Recurso implements MarcavelComoVisto, Pesquisavel {
+public class Filme implements MarcavelComoVisto, Pesquisavel {
 
     private int duracao;
 
