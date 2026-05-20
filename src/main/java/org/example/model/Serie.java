@@ -69,6 +69,7 @@ public class Serie extends Recurso {
     }
 }
 
+
 //1. abstract — Serie não deve ser abstrata. Vamos criar objetos Serie diretamente.
 //2. implements MarcavelComoVisto — a série não deve implementar esta interface.
 //O enunciado diz que é Filme e Episodio que se marcam como vistos, não a série inteira.
