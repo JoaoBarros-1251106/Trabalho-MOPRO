@@ -8,12 +8,16 @@ public class Episodio implements MarcavelComoVisto {
     private int numero;
     private int duracaoMinutos;
     private ArrayList<Espectador> espectadoresQueViram;
+    private ArrayList<Classificacao> classificacoes;
+    private ArrayList<Comentario> comentarios;
 
     public Episodio(String titulo, int numero, int duracaoMinutos) {
         this.titulo = titulo;
         this.numero = numero;
         this.duracaoMinutos = duracaoMinutos;
         this.espectadoresQueViram = new ArrayList<>();
+        this.classificacoes = new ArrayList<>();
+        this.comentarios = new ArrayList<>();
     }
 
     public String getTitulo() {
@@ -26,6 +30,34 @@ public class Episodio implements MarcavelComoVisto {
 
     public int getDuracaoMinutos() {
         return duracaoMinutos;
+    }
+
+    public ArrayList<Classificacao> getClassificacoes() {
+        return classificacoes;
+    }
+
+    public void adicionarClassificacao(Classificacao classificacao) {
+        classificacoes.add(classificacao);
+    }
+
+    public void adicionarComentario(Comentario comentario) {
+        comentarios.add(comentario);
+    }
+
+    public boolean jaClassificou(Espectador espectador) {
+        for (Classificacao classificacao : classificacoes) {
+            if (classificacao.isDoEspectador(espectador)) return true;
+        }
+        return false;
+    }
+
+    public double getClassificacaoMedia() {
+        if (classificacoes.isEmpty()) return 0.0;
+        double soma = 0;
+        for (Classificacao c : classificacoes) {
+            soma += c.getValor();
+        }
+        return soma / classificacoes.size();
     }
 
     // --- Implementação da Interface MarcavelComoVisto ---
