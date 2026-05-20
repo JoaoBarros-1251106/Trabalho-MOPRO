@@ -2,6 +2,7 @@ package org.example.model;
 
     public class Comentario {
 
+
         private UtilizadorRegistado autor;
 
         private String texto;
