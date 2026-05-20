@@ -1,6 +1,8 @@
 package org.example.model;
 
-public abstract class UtilizadorRegistado{
+import java.io.Serializable;
+
+public abstract class UtilizadorRegistado implements Serializable {
     private String email;
     private String nome;
     private String password;
@@ -11,14 +13,32 @@ public abstract class UtilizadorRegistado{
         this.password = password;
     }
 
-    public boolean temPassord(String pass){
-        return password.equals(pass);
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean temNome(String nome) {
+        return this.nome.equals(nome);
+    }
+
+    public boolean temPassword(String password) {
+        return this.password.equals(password);
     }
 
     @Override
     public String toString() {
         return nome + " <" + email + ">";
     }
-
-    public boolean temNome(String username) { return username.equals(nome); }
 }
+
+//classe abstrata que representa um utilizador registado
+//implements Serializable - necessário para gravar em ficheiro (serialização)
+//Superclass de Admin e Espectador
+//Constroi um utilizador registado
+//verifica username e password correto
+//getPassword() não é adicionado - má pratica de segurança expor a password
+//boolean verificaEmail não usado porque não vamos usar o email para autenticação
