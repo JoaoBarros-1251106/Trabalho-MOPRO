@@ -1,8 +1,9 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Episodio implements MarcavelComoVisto {
+public class Episodio implements MarcavelComoVisto, Pesquisavel, Serializable {
 
     private String titulo;
     private int numero;
@@ -72,6 +73,11 @@ public class Episodio implements MarcavelComoVisto {
             throw new Exception("Este episódio já foi marcado como visto por este espectador.");
         }
         espectadoresQueViram.add(espectador);
+    }
+
+    @Override
+    public boolean correspondePesquisa(String texto) {
+        return titulo.toLowerCase().contains(texto.toLowerCase());
     }
 
     @Override

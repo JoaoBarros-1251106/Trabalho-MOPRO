@@ -1,34 +1,30 @@
 package org.example.model;
 
-    public class Comentario {
+import java.io.Serializable;
+
+public class Comentario implements Serializable {
 
 
-        private UtilizadorRegistado autor;
+    private Espectador espectador;
 
-        private String texto ;
+    private String texto;
 
-        public Comentario(
-                UtilizadorRegistado autor,
-                String texto) {
+    public Comentario(Espectador espectador, String texto) {
 
-            this.autor = autor;
-            this.texto = texto;
-        }
+        this.espectador = espectador;
+        this.texto = texto;
+    }
 
-        public UtilizadorRegistado getAutor() {
-            return autor;
-        }
+    public Espectador getEspectador() {
+        return espectador;
+    }
 
-        public String getTexto() {
-            return texto;
-        }
+    public String getTexto() {
+        return texto;
+    }
 
-        @Override
-        public String toString() {
-
-            return autor.getNome() +
-                    ": " + texto;
-
-        }
+    @Override
+    public String toString() {
+        return espectador.getNome() + ": " + texto;
     }
 }

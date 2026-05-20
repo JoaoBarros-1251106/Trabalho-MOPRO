@@ -3,7 +3,7 @@ package org.example.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Recurso implements Serializable {
+public abstract class Recurso implements Pesquisavel, Serializable {
 
     private String titulo;
     private int ano;
@@ -17,21 +17,12 @@ public abstract class Recurso implements Serializable {
         this.atores = new ArrayList<>();
     }
 
-
     public String getTitulo() {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
     public int getAno() {
         return ano;
-    }
-
-    public void setAno(int ano) {
-        this.ano = ano;
     }
 
     public ArrayList<Genero> getGeneros() {
@@ -52,6 +43,19 @@ public abstract class Recurso implements Serializable {
         if (!atores.contains(ator)) {
             atores.add(ator);
         }
+    }
+
+    public boolean isDuplicado(String titulo, int ano) {
+        return this.titulo.equalsIgnoreCase(titulo) && this.ano == ano;
+    }
+
+    public abstract double getClassificacaoMedia();
+
+    public abstract String getCategoriaClassificacao();
+
+    @Override
+    public boolean correspondePesquisa(String texto) {
+        return titulo.toLowerCase().contains(texto.toLowerCase());
     }
 
     @Override

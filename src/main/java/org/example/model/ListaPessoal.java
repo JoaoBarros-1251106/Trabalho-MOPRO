@@ -50,7 +50,7 @@ public class ListaPessoal implements Serializable {
         }
         sb.append("Episodios: (").append(episodios.size()).append("): \n");
         for (Episodio episodio : episodios) {
-            sb.append(" - ").append(episodio.getTitulo()).apend("\n");
+            sb.append(" - ").append(episodio.getTitulo()).append("\n");
         }
         return sb.toString();
     }

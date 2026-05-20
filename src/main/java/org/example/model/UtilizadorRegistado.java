@@ -3,6 +3,7 @@ package org.example.model;
 import java.io.Serializable;
 
 public abstract class UtilizadorRegistado implements Serializable {
+
     private String email;
     private String nome;
     private String password;
@@ -25,7 +26,7 @@ public abstract class UtilizadorRegistado implements Serializable {
         return this.nome.equals(nome);
     }
 
-    public boolean temPassword(String password) {
+    public boolean temPassord(String password) {
         return this.password.equals(password);
     }
 
