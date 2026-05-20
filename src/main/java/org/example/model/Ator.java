@@ -2,7 +2,9 @@ package org.example.model;
 
 import org.example.utils.Data;
 
-public class Ator {
+import java.io.Serializable;
+
+public class Ator implements Pesquisavel, Serializable {
     private String nome;
     private Data dataNascimento;
 
@@ -15,8 +17,7 @@ public class Ator {
 
         return nome;
     }
-    public String getDataNascimento() {
-
+    public Data getDataNascimento() {
         return dataNascimento;
     }
 
@@ -30,8 +31,8 @@ public class Ator {
     }
 
     @Override
-    public boolean correspondePesquisa(String texto){
-        return nome.toUpperCase().contains(texto.toLowerCase());
+    public boolean correspondePesquisa(String texto) {
+        return nome.toLowerCase().contains(texto.toLowerCase());
     }
 
 

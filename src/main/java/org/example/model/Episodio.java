@@ -60,8 +60,6 @@ public class Episodio implements MarcavelComoVisto {
         return soma / classificacoes.size();
     }
 
-    // --- Implementação da Interface MarcavelComoVisto ---
-
     @Override
     public boolean isVisto(Espectador espectador) {
         return espectadoresQueViram.contains(espectador);
