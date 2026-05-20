@@ -5,7 +5,7 @@ package org.example.model;
 
         private UtilizadorRegistado autor;
 
-        private String texto;
+        private String texto ;
 
         public Comentario(
                 UtilizadorRegistado autor,
