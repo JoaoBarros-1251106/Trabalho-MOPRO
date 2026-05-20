@@ -40,7 +40,7 @@ public class DB {
 
     public UtilizadorRegistado login(String username, String password) {
         UtilizadorRegistado ur = pesquisaUtilizador(username);
-        if (ur != null && ur.temPassord(password))
+        if (ur != null && ur.temPassword(password))
             return ur;
         return null;
     }

@@ -26,7 +26,7 @@ public abstract class UtilizadorRegistado implements Serializable {
         return this.nome.equals(nome);
     }
 
-    public boolean temPassord(String password) {
+    public boolean temPassword(String password) {
         return this.password.equals(password);
     }
 
