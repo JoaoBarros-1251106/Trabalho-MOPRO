@@ -17,6 +17,7 @@ public abstract class Recurso implements Serializable {
         this.atores = new ArrayList<>();
     }
 
+
     public String getTitulo() {
         return titulo;
     }
