@@ -1,77 +1,60 @@
 package org.example.model;
 
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Filme implements MarcavelComoVisto, Pesquisavel {
+public abstract class Recurso implements Serializable {
 
-    private int duracao;
+    private String titulo;
+    private int ano;
+    private ArrayList<Genero> generos;
+    private ArrayList<Ator> atores;
 
-    private ArrayList<Comentario> comentarios;
-    private ArrayList<Classificacao> classificacoes;
-
-    public Filme(String titulo, int ano, int duracao) {
-
-        super(titulo, ano);
-
-        this.duracao = duracao;
-
-        comentarios = new ArrayList<>();
-        classificacoes = new ArrayList<>();
+    public Recurso(String titulo, int ano) {
+        this.titulo = titulo;
+        this.ano = ano;
+        this.generos = new ArrayList<>();
+        this.atores = new ArrayList<>();
     }
 
-    public int getDuracao() {
-        return duracao;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void adicionarComentario(Comentario comentario) {
-
-        comentarios.add(comentario);
-
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
-    public void adicionarClassificacao(Classificacao classificacao) {
-
-        classificacoes.add(classificacao);
-
+    public int getAno() {
+        return ano;
     }
 
-    public double calcularMedia() {
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
 
-        if(classificacoes.isEmpty()) {
-            return 0;
+    public ArrayList<Genero> getGeneros() {
+        return generos;
+    }
+
+    public void adicionarGenero(Genero genero) {
+        if (!generos.contains(genero)) {
+            generos.add(genero);
         }
+    }
 
-        int soma = 0;
+    public ArrayList<Ator> getAtores() {
+        return atores;
+    }
 
-        for(Classificacao c : classificacoes) {
-
-            soma += c.getValor();
-
+    public void adicionarAtor(Ator ator) {
+        if (!atores.contains(ator)) {
+            atores.add(ator);
         }
-
-        return (double) soma / classificacoes.size();
-    }
-
-    @Override
-    public void marcarComoVisto() {
-
-        System.out.println("Filme marcado como visto.");
-
-    }
-
-    @Override
-    public boolean pesquisar(String texto) {
-
-        return getTitulo().toLowerCase()
-                .contains(texto.toLowerCase());
     }
 
     @Override
     public String toString() {
-
-        return super.toString() +
-                " | Duracao: " + duracao;
-
+        return titulo + " (" + ano + ") | Géneros: " + generos;
     }
 }
