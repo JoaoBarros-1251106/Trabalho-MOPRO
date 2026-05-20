@@ -33,6 +33,7 @@ public class Serie extends Recurso implements MarcavelComoVisto, Pesquisavel {
 
     }
 
+
     @Override
     public String toString() {
 
