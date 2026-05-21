@@ -8,13 +8,17 @@ public class DB {
 
     private List<UtilizadorRegistado> lstUtilizadores;
     private List<Ator> lstAtores;
-    // Completar
+    // adicionado
+    private List<Filme> lstFilmes;
+    private List<Serie> lstSeries;
 
     public DB(String url) {
         this.url = url;
         this.lstAtores = new ArrayList<Ator>();
         this.lstUtilizadores = new ArrayList<>();
-        // Completar
+        // adicionar
+        this.lstFilmes = new ArrayList<>();
+        this.lstSeries = new ArrayList<>();
     }
 
     public void adicionarAtor(Ator a) {
@@ -51,8 +55,12 @@ public class DB {
         sb.append("(").append(url).append(")");
         sb.append(listarUtilizadores());
         sb.append(listarAtores());
-        // Completar
+        // adicionado
+        sb.append(listarFilmes());
+        sb.append(listarSeries());
         return sb.toString();
+
+        //criar claases listarfilmes e listar series
     }
 
     public String listarUtilizadores() {
