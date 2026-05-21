@@ -20,7 +20,10 @@ public class MenuSemLogin {
             System.out.println("#################################################");
             System.out.println("#                                               #");
             System.out.println("#  1. Listar atores                             #");
-            // Completar
+            //
+            System.out.println("#  2. Ver utilizadores                          #");
+            System.out.println("#  3. Ver estado da plataforma                  #");
+            //
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
@@ -33,8 +36,20 @@ public class MenuSemLogin {
                 case "1":
                     System.out.println(imdb.listarAtores());
                     break;
-                // Completar
+                    //
+                case "2":
+                    System.out.println(imdb.listarUtilizadores());
+                    break;
+
+                case "3":
+                    System.out.println(imdb);
+                    break;
+
+                case "0":
+                    break;
+                    //
             }
+
         }
         while (!opcao.equals("0"));
     }
