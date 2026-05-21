@@ -2,6 +2,7 @@ package org.example.ui;
 
 import org.example.model.Admin;
 import org.example.model.DB;
+import org.example.model.Espectador;
 import org.example.model.UtilizadorRegistado;
 import org.example.utils.Utils;
 

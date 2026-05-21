@@ -43,9 +43,14 @@ public class MenuFonteInfo {
                     System.out.println("----------------------------");
                     break;
                 case "2":
-                    // Completar
+                    System.out.println("Funcionalidade de carregamento ainda não implementada.");
                     break;
-                // Completar
+
+                    //adicionado
+
+                case "0":
+                    System.out.println("Aplicação terminada.");
+                    break;
             }
             if (imdb != null) {
                 System.out.println(imdb);

@@ -19,13 +19,14 @@ public class MenuAdministrador {
             System.out.println("#################################################");
             System.out.println("#                                               #");
             System.out.println("#  1. Gerir atores                              #");
-            // Completar
+            System.out.println("#  2. Ver utilizadores                          #");
+            System.out.println("#  3. Ver estado da plataforma                  #");
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
             System.out.println("#################################################");
             System.out.println();
-
+            //adicionado
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 
             switch (opcao) {
@@ -33,7 +34,18 @@ public class MenuAdministrador {
                     MenuGerirAtores uiAtores = new MenuGerirAtores(imdb);
                     uiAtores.run();
                     break;
-                // Completar
+                // adicionado
+                case "2":
+                    System.out.println(imdb.listarUtilizadores());
+                    break;
+
+                case "3":
+                    System.out.println(imdb);
+                    break;
+
+                case "0":
+                    break;
+
             }
         }
         while (!opcao.equals("0"));

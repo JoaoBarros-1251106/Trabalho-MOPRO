@@ -20,17 +20,35 @@ public class MenuUtilizadorRegistado {
             System.out.println("#                     MENU                      #");
             System.out.println("#################################################");
             System.out.println("#                                               #");
-            // Completar
+            System.out.println("#  1. Ver atores                                #");
+            System.out.println("#  2. Ver utilizadores                          #");
+            System.out.println("#  3. Ver perfil                                #");
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
             System.out.println("#################################################");
             System.out.println();
+            //adicionado
 
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 
             switch (opcao) {
-                // Completar
+                // adicionado
+                case "1":
+                    System.out.println(imdb.listarAtores());
+                    break;
+
+                case "2":
+                    System.out.println(imdb.listarUtilizadores());
+                    break;
+
+                case "3":
+                    System.out.println(utilizador);
+                    break;
+
+                case "0":
+                    break;
+
             }
         }
         while (!opcao.equals("0"));
