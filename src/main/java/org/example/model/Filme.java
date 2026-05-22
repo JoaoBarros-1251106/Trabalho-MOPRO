@@ -3,7 +3,7 @@ package org.example.model;
 import java.util.ArrayList;
 
 /**
- * Representa um Filme no sistema, permitindo interações como classificações,
+ * Representa um Filme no sistema, permitindo classificações,
  * comentários e marcação de visualizações.
  */
 public class Filme extends Recurso implements MarcavelComoVisto {
@@ -13,68 +13,44 @@ public class Filme extends Recurso implements MarcavelComoVisto {
     private ArrayList<Comentario> comentarios;
     private ArrayList<Espectador> vistos;
 
-    // NOVO: Lista de atores e valores de limiar dinâmicos para classificação
-    private ArrayList<Ator> atores;
-    private static double LIMIAR_MEDIO = 4.0;
-    private static double LIMIAR_BOM = 8.0;
+    // Constantes para os limiares de classificação (evita magic numbers)
+    private static final double LIMIAR_MEDIO = 4.0;
+    private static final double LIMIAR_BOM = 8.0;
 
     /**
      * Construtor da classe Filme.
      * @param titulo Título do filme.
      * @param ano Ano de lançamento.
      * @param duracao Duração em minutos.
+     * @param genero Primeiro género obrigatório.
+     * @param ator Primeiro ator associado obrigatório (Regra do enunciado).
      */
-    public Filme(String titulo, int ano, int duracao) {
-        super(titulo, ano); // Chama o construtor de Recurso
+    public Filme(String titulo, int ano, int duracao, Genero genero, Ator ator) {
+        super(titulo, ano, genero); // Passa os dados para a classe mãe (Recurso)
+        this.adicionarAtor(ator);   // Garante que tem pelo menos 1 ator
         this.duracao = duracao;
         this.classificacoes = new ArrayList<>();
         this.comentarios = new ArrayList<>();
         this.vistos = new ArrayList<>();
-        this.atores = new ArrayList<>(); // Inicialização da lista de atores
     }
 
-    public int getDuracao() {
-        return duracao;
-    }
-
-    public ArrayList<Classificacao> getClassificacoes() {
-        return classificacoes;
-    }
-
-    public ArrayList<Comentario> getComentarios() {
-        return comentarios;
-    }
-
-    public ArrayList<Ator> getAtores() {
-        return atores;
-    }
+    public int getDuracao() { return duracao; }
+    public ArrayList<Classificacao> getClassificacoes() { return classificacoes; }
+    public ArrayList<Comentario> getComentarios() { return comentarios; }
 
     /**
-     * Adiciona um ator ao filme. O enunciado exige pelo menos 1 ator.
-     * @param ator O ator a ser adicionado.
-     */
-    public void adicionarAtor(Ator ator) {
-        if (!atores.contains(ator)) {
-            atores.add(ator);
-        }
-    }
-
-    /**
-     * Adiciona uma classificação ao filme com base nas regras de negócio.
-     * @param classificacao A classificação a adicionar.
-     * @throws Exception Se o espetador não tiver visto o filme ou se já o tiver classificado.
+     * Adiciona uma classificação ao filme cumprindo as regras de negócio.
+     * @param classificacao A classificação do espetador.
+     * @throws Exception Se o filme não foi visto ou já foi classificado.
      */
     public void adicionarClassificacao(Classificacao classificacao) throws Exception {
         Espectador e = classificacao.getEspectador();
-
-        // NOVO: Validações exigidas pelo enunciado
         if (!isVisto(e)) {
             throw new Exception("Erro: O espectador " + e.getNome() + " não pode classificar um filme que ainda não viu.");
         }
         if (jaClassificou(e)) {
             throw new Exception("Erro: O espectador " + e.getNome() + " já classificou este filme.");
         }
-
         classificacoes.add(classificacao);
     }
 
@@ -84,18 +60,14 @@ public class Filme extends Recurso implements MarcavelComoVisto {
 
     public boolean jaClassificou(Espectador espectador) {
         for (Classificacao c : classificacoes) {
-            if (c.isDoEspectador(espectador)){
-                return true;
-            }
+            if (c.isDoEspectador(espectador)) return true;
         }
         return false;
     }
 
     @Override
     public double getClassificacaoMedia() {
-        if (classificacoes.isEmpty()){
-            return 0.0;
-        }
+        if (classificacoes.isEmpty()) return 0.0;
         double soma = 0;
         for (Classificacao c : classificacoes) {
             soma += c.getValor();
@@ -103,23 +75,12 @@ public class Filme extends Recurso implements MarcavelComoVisto {
         return soma / classificacoes.size();
     }
 
-    /**
-     * Devolve a categoria da classificação do filme.
-     * @return String "Fraco", "Médio" ou "Bom".
-     */
     @Override
     public String getCategoriaClassificacao() {
         double media = getClassificacaoMedia();
-        if (media == 0.0){
-            return "Sem classificação";
-        }
-        // NOVO: Utilização de constantes dinâmicas em vez de "magic numbers"
-        if (media < LIMIAR_MEDIO) {
-            return "Fraco";
-        }
-        if (media <= LIMIAR_BOM){
-            return "Médio";
-        }
+        if (media == 0.0) return "Sem classificação";
+        if (media < LIMIAR_MEDIO) return "Fraco";
+        if (media <= LIMIAR_BOM) return "Médio";
         return "Bom";
     }
 
@@ -128,11 +89,6 @@ public class Filme extends Recurso implements MarcavelComoVisto {
         return vistos.contains(espectador);
     }
 
-    /**
-     * Marca o filme como visto por um espetador.
-     * @param espectador O utilizador que visualizou.
-     * @throws Exception Se o filme já estiver marcado como visto por este espetador.
-     */
     @Override
     public void marcarComoVisto(Espectador espectador) throws Exception {
         if (isVisto(espectador)) {
