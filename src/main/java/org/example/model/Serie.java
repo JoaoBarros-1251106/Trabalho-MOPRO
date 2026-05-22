@@ -2,24 +2,38 @@ package org.example.model;
 
 import java.util.ArrayList;
 
+/**
+ * Representa uma Série no sistema, contendo uma lista de temporadas.
+ */
 public class Serie extends Recurso {
 
     private ArrayList<Temporada> temporadas;
 
-    public Serie(String titulo, int ano) {
-        super(titulo, ano);  // Chama o construtor da classe mãe (Recurso)
+    // Constantes corrigidas (O enunciado dizia Médio 5 a 7.8 e Bom > 7.5. Ajustado para >= 7.8)
+    private static final double LIMIAR_MEDIO_SERIE = 5.0;
+    private static final double LIMIAR_BOM_SERIE = 7.8;
+
+    /**
+     * Construtor da classe Serie.
+     * @param titulo Título da série.
+     * @param ano Ano de lançamento inicial.
+     * @param genero Primeiro género obrigatório.
+     */
+    public Serie(String titulo, int ano, Genero genero) {
+        super(titulo, ano, genero);
         this.temporadas = new ArrayList<>();
     }
 
     public void adicionarTemporada(Temporada temporada) {
-        temporadas.add(temporada);
+        if (!temporadas.contains(temporada)) {
+            temporadas.add(temporada);
+        }
     }
 
     public ArrayList<Temporada> getTemporadas() {
         return temporadas;
     }
 
-    // Pesquisa uma temporada pelo número
     public Temporada getTemporada(int numero) {
         for (Temporada t : temporadas) {
             if (t.getNumero() == numero) return t;
@@ -27,7 +41,6 @@ public class Serie extends Recurso {
         return null;
     }
 
-    // Devolve todos os episódios de todas as temporadas
     public ArrayList<Episodio> getTodosEpisodios() {
         ArrayList<Episodio> todos = new ArrayList<>();
         for (Temporada t : temporadas) {
@@ -36,7 +49,6 @@ public class Serie extends Recurso {
         return todos;
     }
 
-    // Calcula a média das classificações de todos os episódios
     @Override
     public double getClassificacaoMedia() {
         ArrayList<Episodio> todos = getTodosEpisodios();
@@ -49,17 +61,15 @@ public class Serie extends Recurso {
                 count++;
             }
         }
-        if (count == 0) return 0.0;
-        return soma / count;
+        return count == 0 ? 0.0 : soma / count;
     }
 
-    // Fraco < 5, Médio entre 5 e 7.8, Bom > 7.5
     @Override
     public String getCategoriaClassificacao() {
         double media = getClassificacaoMedia();
         if (media == 0.0) return "Sem classificação";
-        if (media < 5) return "Fraco";
-        if (media <= 7.8) return "Médio";
+        if (media < LIMIAR_MEDIO_SERIE) return "Fraco";
+        if (media <= LIMIAR_BOM_SERIE) return "Médio";
         return "Bom";
     }
 
@@ -68,10 +78,3 @@ public class Serie extends Recurso {
         return "[Série] " + super.toString() + " | Temporadas: " + temporadas.size();
     }
 }
-
-
-//1. abstract — Serie não deve ser abstrata. Vamos criar objetos Serie diretamente.
-//2. implements MarcavelComoVisto — a série não deve implementar esta interface.
-//O enunciado diz que é Filme e Episodio que se marcam como vistos, não a série inteira.
-//3. Pesquisavel — não precisas de implementar aqui porque o Recurso já implementa correspondePesquisa.
-//4. isVisto e marcarComoVisto — pela mesma razão, não devem estar na Serie.

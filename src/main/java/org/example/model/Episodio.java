@@ -14,8 +14,6 @@ public class Episodio implements MarcavelComoVisto, Pesquisavel, Serializable {
     private ArrayList<Espectador> espectadoresQueViram;
     private ArrayList<Classificacao> classificacoes;
     private ArrayList<Comentario> comentarios;
-
-    // NOVO: Lista de atores
     private ArrayList<Ator> atores;
 
     /**
@@ -23,15 +21,17 @@ public class Episodio implements MarcavelComoVisto, Pesquisavel, Serializable {
      * @param titulo Título do episódio.
      * @param numero Número do episódio.
      * @param duracaoMinutos Duração do episódio.
+     * @param ator Primeiro ator associado obrigatório (Regra do enunciado).
      */
-    public Episodio(String titulo, int numero, int duracaoMinutos) {
+    public Episodio(String titulo, int numero, int duracaoMinutos, Ator ator) {
         this.titulo = titulo;
         this.numero = numero;
         this.duracaoMinutos = duracaoMinutos;
         this.espectadoresQueViram = new ArrayList<>();
         this.classificacoes = new ArrayList<>();
         this.comentarios = new ArrayList<>();
-        this.atores = new ArrayList<>(); // Inicialização
+        this.atores = new ArrayList<>();
+        this.atores.add(ator); // Garante que tem pelo menos 1 ator
     }
 
     public String getTitulo() { return titulo; }
@@ -40,10 +40,6 @@ public class Episodio implements MarcavelComoVisto, Pesquisavel, Serializable {
     public ArrayList<Classificacao> getClassificacoes() { return classificacoes; }
     public ArrayList<Ator> getAtores() { return atores; }
 
-    /**
-     * Adiciona um ator ao episódio.
-     * @param ator Ator a adicionar.
-     */
     public void adicionarAtor(Ator ator) {
         if (!atores.contains(ator)) {
             atores.add(ator);
@@ -57,8 +53,6 @@ public class Episodio implements MarcavelComoVisto, Pesquisavel, Serializable {
      */
     public void adicionarClassificacao(Classificacao classificacao) throws Exception {
         Espectador e = classificacao.getEspectador();
-
-        // NOVO: Validações exigidas
         if (!isVisto(e)) {
             throw new Exception("Erro: Não pode classificar um episódio que ainda não viu.");
         }
