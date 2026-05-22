@@ -2,27 +2,23 @@ package org.example.model;
 
 import java.util.ArrayList;
 
-/**
- * Representa uma Série no sistema, contendo uma lista de temporadas.
- */
 public class Serie extends Recurso {
 
     private ArrayList<Temporada> temporadas;
+    private ArrayList<Classificacao> classificacoes; // Adicionado conforme pediste
 
-    // Constantes corrigidas (O enunciado dizia Médio 5 a 7.8 e Bom > 7.5. Ajustado para >= 7.8)
     private static final double LIMIAR_MEDIO_SERIE = 5.0;
     private static final double LIMIAR_BOM_SERIE = 7.8;
 
-    /**
-     * Construtor da classe Serie.
-     * @param titulo Título da série.
-     * @param ano Ano de lançamento inicial.
-     * @param genero Primeiro género obrigatório.
-     */
     public Serie(String titulo, int ano, Genero genero) {
-        super(titulo, ano, genero);
+        super(titulo, ano, genero); // O título, ano e género são enviados para o Recurso
         this.temporadas = new ArrayList<>();
+        this.classificacoes = new ArrayList<>();
     }
+
+    // ==========================================
+    // GESTÃO DE TEMPORADAS
+    // ==========================================
 
     public void adicionarTemporada(Temporada temporada) {
         if (!temporadas.contains(temporada)) {
@@ -31,42 +27,42 @@ public class Serie extends Recurso {
     }
 
     public ArrayList<Temporada> getTemporadas() {
-        return temporadas;
+        return new ArrayList<>(temporadas); // Proteção da lista (encapsulamento)
     }
 
-    public Temporada getTemporada(int numero) {
-        for (Temporada t : temporadas) {
-            if (t.getNumero() == numero) return t;
-        }
-        return null;
+    // ==========================================
+    // CLASSIFICAÇÕES
+    // ==========================================
+
+    public void adicionarClassificacao(Classificacao classificacao) {
+        classificacoes.add(classificacao);
     }
 
-    public ArrayList<Episodio> getTodosEpisodios() {
-        ArrayList<Episodio> todos = new ArrayList<>();
-        for (Temporada t : temporadas) {
-            todos.addAll(t.getEpisodios());
+    public double calcularMediaClassificacoes() {
+        if (classificacoes.isEmpty()) {
+            return 0.0;
         }
-        return todos;
+
+        double soma = 0;
+        for (Classificacao c : classificacoes) {
+            soma += c.getValor();
+        }
+
+        return soma / classificacoes.size();
     }
+
+    // ==========================================
+    // MÉTODOS HERDADOS DE RECURSO
+    // ==========================================
 
     @Override
     public double getClassificacaoMedia() {
-        ArrayList<Episodio> todos = getTodosEpisodios();
-        if (todos.isEmpty()) return 0.0;
-        double soma = 0;
-        int count = 0;
-        for (Episodio e : todos) {
-            if (!e.getClassificacoes().isEmpty()) {
-                soma += e.getClassificacaoMedia();
-                count++;
-            }
-        }
-        return count == 0 ? 0.0 : soma / count;
+        return calcularMediaClassificacoes();
     }
 
     @Override
     public String getCategoriaClassificacao() {
-        double media = getClassificacaoMedia();
+        double media = calcularMediaClassificacoes();
         if (media == 0.0) return "Sem classificação";
         if (media < LIMIAR_MEDIO_SERIE) return "Fraco";
         if (media <= LIMIAR_BOM_SERIE) return "Médio";

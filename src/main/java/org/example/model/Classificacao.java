@@ -1,33 +1,31 @@
 package org.example.model;
 
-import java.io.Serializable;
-
-public class Classificacao implements Serializable {
+public class Classificacao {
 
     private int valor;
-    private Espectador espectador;
+    private UtilizadorRegistado utilizador; // Mudou de Espectador para UtilizadorRegistado
 
-    public Classificacao(int valor, Espectador espectador) {
+    public Classificacao(int valor, UtilizadorRegistado utilizador) {
         this.valor = valor;
-        this.espectador = espectador;
+        this.utilizador = utilizador;
     }
 
     public int getValor() {
         return valor;
     }
 
-    // Devolve o espectador que classificou
-    public Espectador getEspectador() {
-        return espectador;
+    // Devolve o utilizador que classificou (Resolve o erro da linha 75)
+    public UtilizadorRegistado getUtilizador() {
+        return utilizador;
     }
 
-    // Verifica se a classificação foi feita pelo espectador indicado
-    public boolean isDoEspectador(Espectador e) {
-        return this.espectador.equals(e);
+    // Verifica se a classificação foi feita pelo utilizador indicado
+    public boolean isDoUtilizador(UtilizadorRegistado u) {
+        return this.utilizador.equals(u);
     }
 
     @Override
     public String toString() {
-        return espectador.getNome() + ": " + valor + "/10";
+        return utilizador.getNome() + ": " + valor + "/10";
     }
 }

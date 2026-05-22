@@ -1,17 +1,25 @@
 package org.example.model;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
-public abstract class UtilizadorRegistado implements Serializable {
+public abstract class UtilizadorRegistado {
 
     private String email;
     private String nome;
     private String password;
 
+    // Novas listas adicionadas
+    private ListaPessoal listaPessoal;
+    private ArrayList<Recurso> vistos;
+
     public UtilizadorRegistado(String email, String nome, String password) {
         this.email = email;
         this.nome = nome;
         this.password = password;
+
+        // Inicializar as listas no construtor para evitar erros
+        this.listaPessoal = new ListaPessoal();
+        this.vistos = new ArrayList<>();
     }
 
     public String getNome() {
@@ -30,12 +38,65 @@ public abstract class UtilizadorRegistado implements Serializable {
         return this.password.equals(password);
     }
 
+    // ==========================================
+    // LISTA PESSOAL
+    // ==========================================
+
+    public ListaPessoal getListaPessoal() {
+        return listaPessoal;
+    }
+
+    // ==========================================
+    // HISTÓRICO DE VISUALIZAÇÕES
+    // ==========================================
+
+    public void adicionarVisualizado(Recurso r) {
+        if (!vistos.contains(r)) {
+            vistos.add(r);
+        }
+    }
+
+    public boolean jaViu(Recurso r) {
+        return vistos.contains(r);
+    }
+
+    // ==========================================
+    // INTERAÇÕES (CLASSIFICAR E COMENTAR)
+    // ==========================================
+
+    public void classificarFilme(Filme filme, int valor) {
+        if (!jaViu(filme)) {
+            System.out.println("Tem de ver o filme primeiro.");
+            return; // Sai do método sem lançar exceção
+        }
+
+        for (Classificacao c : filme.getClassificacoes()) {
+            // Nota: Garante que o método getUtilizador() existe na classe Classificacao
+            if (c.getUtilizador().equals(this)) {
+                System.out.println("Já classificou este filme.");
+                return; // Sai do método sem lançar exceção
+            }
+        }
+
+        // Assumindo que o construtor é Classificacao(int, UtilizadorRegistado)
+        filme.adicionarClassificacao(new Classificacao(valor, this));
+    }
+
+    public void comentarFilme(Filme filme, String texto) {
+        if (!jaViu(filme)) {
+            System.out.println("Tem de ver o filme primeiro para poder comentar.");
+            return; // Sai do método sem lançar exceção
+        }
+
+        // Assumindo que o construtor é Comentario(UtilizadorRegistado, String)
+        filme.adicionarComentario(new Comentario(this, texto));
+    }
+
     @Override
     public String toString() {
         return nome + " <" + email + ">";
     }
 }
-
 //classe abstrata que representa um utilizador registado
 //implements Serializable - necessário para gravar em ficheiro (serialização)
 //Superclass de Admin e Espectador

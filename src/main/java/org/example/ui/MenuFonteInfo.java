@@ -3,6 +3,7 @@ package org.example.ui;
 import org.example.model.*;
 import org.example.utils.Data;
 import org.example.utils.Utils;
+import org.example.ui.GestorFicheiros;
 
 public class MenuFonteInfo {
     private DB imdb;
@@ -43,20 +44,27 @@ public class MenuFonteInfo {
                     System.out.println("----------------------------");
                     break;
                 case "2":
-                    System.out.println("Funcionalidade de carregamento ainda não implementada.");
+                    // Carrega a base de dados a partir do ficheiro
+                    imdb = GestorFicheiros.carregar();
                     break;
 
-                    //adicionado
-
                 case "0":
+                    // Guarda os dados no ficheiro antes de terminar a aplicação
+                    if (imdb != null) {
+                        System.out.println("A guardar os dados...");
+                        GestorFicheiros.guardar(imdb);
+                    }
                     System.out.println("Aplicação terminada.");
                     break;
             }
-            if (imdb != null) {
+
+            // Só avança para o MenuInicial se a DB não for nula E a opção não for Sair (0)
+            if (imdb != null && !opcao.equals("0")) {
                 System.out.println(imdb);
                 MenuInicial uiMenu = new MenuInicial(imdb);
                 uiMenu.run();
             }
+
         } while (!opcao.equals("0"));
     }
 

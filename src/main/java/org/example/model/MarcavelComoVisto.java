@@ -1,11 +1,9 @@
 package org.example.model;
 
 public interface MarcavelComoVisto {
-    boolean isVisto(Espectador espectador);
-
-    void marcarComoVisto(Espectador espectador) throws Exception;
+    boolean isVisto(UtilizadorRegistado utilizador);
+    void marcarComoVisto(UtilizadorRegistado utilizador);
 }
-
 //implementada por Filme e Episodio
 //boolean verifica se o espcatador já marcou como visto
 //throws Exception - há situações em que o marcar como visto não deve ser permitido

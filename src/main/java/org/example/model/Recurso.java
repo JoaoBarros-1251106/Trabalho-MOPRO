@@ -1,6 +1,5 @@
 package org.example.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -8,7 +7,7 @@ import java.util.Objects;
  * Classe abstrata que representa um Recurso audiovisual (Filme ou Série).
  * Contém a informação partilhada por ambos.
  */
-public abstract class Recurso implements Pesquisavel, Serializable {
+public abstract class Recurso implements Pesquisavel {
 
     private String titulo;
     private int ano;
@@ -31,8 +30,15 @@ public abstract class Recurso implements Pesquisavel, Serializable {
 
     public String getTitulo() { return titulo; }
     public int getAno() { return ano; }
-    public ArrayList<Genero> getGeneros() { return generos; }
-    public ArrayList<Ator> getAtores() { return atores; }
+
+    // Retornar uma cópia da lista garante segurança (Encapsulamento):
+    public ArrayList<Genero> getGeneros() {
+        return new ArrayList<>(generos);
+    }
+
+    public ArrayList<Ator> getAtores() {
+        return new ArrayList<>(atores);
+    }
 
     public void adicionarGenero(Genero genero) {
         if (!generos.contains(genero)) {

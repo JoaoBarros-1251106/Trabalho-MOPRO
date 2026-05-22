@@ -1,9 +1,8 @@
 package org.example.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Temporada implements Serializable {
+public class Temporada {
 
     private int numero;
     private int ano;
@@ -35,12 +34,40 @@ public class Temporada implements Serializable {
     }
 
     public ArrayList<Episodio> getEpisodios() {
-        return episodios;
+        // Retorna uma cópia da lista para garantir segurança (Encapsulamento)
+        return new ArrayList<>(episodios);
+    }
+
+    // ==========================================
+    // MÉTODOS EXTRA PARA FACILITAR OS MENUS
+    // ==========================================
+
+    /**
+     * Procura e devolve um episódio específico através do seu número.
+     */
+    public Episodio getEpisodio(int numeroEpisodio) {
+        for (Episodio e : episodios) {
+            if (e.getNumero() == numeroEpisodio) {
+                return e;
+            }
+        }
+        return null; // Retorna nulo se o episódio não existir nesta temporada
+    }
+
+    /**
+     * Calcula a duração total da temporada somando a duração de todos os episódios.
+     */
+    public int getDuracaoTotal() {
+        int totalMinutos = 0;
+        for (Episodio e : episodios) {
+            totalMinutos += e.getDuracaoMinutos();
+        }
+        return totalMinutos;
     }
 
     @Override
     public String toString() {
-        return "Temporada " + numero + " | Episódios: " + episodios.size();
+        return "Temporada " + numero + " (" + ano + ") | Episódios: " + episodios.size() + " | Duração total: " + getDuracaoTotal() + " min";
     }
 }
 

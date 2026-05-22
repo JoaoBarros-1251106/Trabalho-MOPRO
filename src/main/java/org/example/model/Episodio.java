@@ -1,17 +1,17 @@
 package org.example.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Classe que representa um Episódio de uma Série.
  */
-public class Episodio implements MarcavelComoVisto, Pesquisavel, Serializable {
+public class Episodio implements MarcavelComoVisto, Pesquisavel {
 
     private String titulo;
     private int numero;
     private int duracaoMinutos;
-    private ArrayList<Espectador> espectadoresQueViram;
+
+    private ArrayList<UtilizadorRegistado> vistos; // Atualizado para usar UtilizadorRegistado
     private ArrayList<Classificacao> classificacoes;
     private ArrayList<Comentario> comentarios;
     private ArrayList<Ator> atores;
@@ -21,24 +21,38 @@ public class Episodio implements MarcavelComoVisto, Pesquisavel, Serializable {
      * @param titulo Título do episódio.
      * @param numero Número do episódio.
      * @param duracaoMinutos Duração do episódio.
-     * @param ator Primeiro ator associado obrigatório (Regra do enunciado).
+     * @param ator Primeiro ator associado obrigatório.
      */
     public Episodio(String titulo, int numero, int duracaoMinutos, Ator ator) {
         this.titulo = titulo;
         this.numero = numero;
         this.duracaoMinutos = duracaoMinutos;
-        this.espectadoresQueViram = new ArrayList<>();
+        this.vistos = new ArrayList<>();
         this.classificacoes = new ArrayList<>();
         this.comentarios = new ArrayList<>();
         this.atores = new ArrayList<>();
         this.atores.add(ator); // Garante que tem pelo menos 1 ator
     }
 
-    public String getTitulo() { return titulo; }
-    public int getNumero() { return numero; }
-    public int getDuracaoMinutos() { return duracaoMinutos; }
-    public ArrayList<Classificacao> getClassificacoes() { return classificacoes; }
-    public ArrayList<Ator> getAtores() { return atores; }
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public int getDuracaoMinutos() {
+        return duracaoMinutos;
+    }
+
+    public ArrayList<Classificacao> getClassificacoes() {
+        return new ArrayList<>(classificacoes);
+    }
+
+    public ArrayList<Ator> getAtores() {
+        return new ArrayList<>(atores);
+    }
 
     public void adicionarAtor(Ator ator) {
         if (!atores.contains(ator)) {
@@ -46,19 +60,7 @@ public class Episodio implements MarcavelComoVisto, Pesquisavel, Serializable {
         }
     }
 
-    /**
-     * Adiciona uma classificação ao episódio (Garante regras de negócio).
-     * @param classificacao Classificação do espetador.
-     * @throws Exception Se o espetador não viu o episódio ou já o classificou.
-     */
-    public void adicionarClassificacao(Classificacao classificacao) throws Exception {
-        Espectador e = classificacao.getEspectador();
-        if (!isVisto(e)) {
-            throw new Exception("Erro: Não pode classificar um episódio que ainda não viu.");
-        }
-        if (jaClassificou(e)) {
-            throw new Exception("Erro: Já classificou este episódio.");
-        }
+    public void adicionarClassificacao(Classificacao classificacao) {
         classificacoes.add(classificacao);
     }
 
@@ -66,15 +68,11 @@ public class Episodio implements MarcavelComoVisto, Pesquisavel, Serializable {
         comentarios.add(comentario);
     }
 
-    public boolean jaClassificou(Espectador espectador) {
-        for (Classificacao c : classificacoes) {
-            if (c.isDoEspectador(espectador)) return true;
-        }
-        return false;
-    }
-
     public double getClassificacaoMedia() {
-        if (classificacoes.isEmpty()) return 0.0;
+        if (classificacoes.isEmpty()) {
+            return 0.0;
+        }
+
         double soma = 0;
         for (Classificacao c : classificacoes) {
             soma += c.getValor();
@@ -82,18 +80,25 @@ public class Episodio implements MarcavelComoVisto, Pesquisavel, Serializable {
         return soma / classificacoes.size();
     }
 
+    // ==========================================
+    // INTERFACE MarcavelComoVisto
+    // ==========================================
+
     @Override
-    public boolean isVisto(Espectador espectador) {
-        return espectadoresQueViram.contains(espectador);
+    public void marcarComoVisto(UtilizadorRegistado utilizador) {
+        if (!vistos.contains(utilizador)) {
+            vistos.add(utilizador);
+        }
     }
 
     @Override
-    public void marcarComoVisto(Espectador espectador) throws Exception {
-        if (isVisto(espectador)) {
-            throw new Exception("Este episódio já foi marcado como visto por este espectador.");
-        }
-        espectadoresQueViram.add(espectador);
+    public boolean isVisto(UtilizadorRegistado utilizador) {
+        return vistos.contains(utilizador);
     }
+
+    // ==========================================
+    // INTERFACE Pesquisavel
+    // ==========================================
 
     @Override
     public boolean correspondePesquisa(String texto) {
