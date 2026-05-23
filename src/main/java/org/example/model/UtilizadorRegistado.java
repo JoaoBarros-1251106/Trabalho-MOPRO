@@ -2,7 +2,7 @@ package org.example.model;
 
 import java.util.ArrayList;
 
-public abstract class UtilizadorRegistado {
+public abstract class UtilizadorRegistado extends Utilizador {
 
     private String email;
     private String nome;
@@ -12,17 +12,12 @@ public abstract class UtilizadorRegistado {
     private ListaPessoal listaPessoal;
     private ArrayList<Recurso> vistos;
 
-    public UtilizadorRegistado(String email, String nome, String password) {
-        this.email = email;
-        this.nome = nome;
-        this.password = password;
-
-        // Inicializar as listas no construtor para evitar erros
-        this.listaPessoal = new ListaPessoal();
-        this.vistos = new ArrayList<>();
+    public UtilizadorRegistado(String username, String email, String password) {
+        super(username, email, password);
     }
 
     public String getNome() {
+
         return nome;
     }
 
@@ -31,10 +26,12 @@ public abstract class UtilizadorRegistado {
     }
 
     public boolean temNome(String nome) {
+
         return this.nome.equals(nome);
     }
 
     public boolean temPassword(String password) {
+
         return this.password.equals(password);
     }
 

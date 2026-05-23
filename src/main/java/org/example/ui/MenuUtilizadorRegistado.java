@@ -31,6 +31,7 @@ public class MenuUtilizadorRegistado {
             System.out.println("#  4. Marcar como visto                         #");
             System.out.println("#  5. Classificar filme                         #");
             System.out.println("#  6. Comentar filme                            #");
+            System.out.println("#  7. Ver filmes/séries disponíveis             #");
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
@@ -57,6 +58,10 @@ public class MenuUtilizadorRegistado {
                     break;
                 case "6":
                     comentarFilme();
+                    break;
+                case "7":
+                    System.out.println(imdb.listarFilmes());
+                    System.out.println(imdb.listarSeries());
                     break;
                 case "0":
                     break;
