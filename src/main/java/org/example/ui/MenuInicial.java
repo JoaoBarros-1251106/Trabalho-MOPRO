@@ -34,13 +34,15 @@ public class MenuInicial {
             if (opcao.equals("1")) {
                 MenuSemLogin ui = new MenuSemLogin(imdb);
                 ui.run();
+
+
             } else if (opcao.equals("2")) {
                 UtilizadorRegistado ur = null;
                 while (ur == null) {
-                    String username = Utils.readLineFromConsole("Introduza o username: ");
+                    String nome = Utils.readLineFromConsole("Introduza o username: ");
                     String password = Utils.readLineFromConsole("Introduza a password: ");
                     try {
-                        ur = imdb.login(username, password);
+                        ur = imdb.login(nome, password);
                         if (ur == null) {
                             throw new Exception("Credenciais inválidas");
                         }

@@ -2,40 +2,44 @@ package org.example.model;
 
 import java.util.ArrayList;
 
-public abstract class UtilizadorRegistado {
+public abstract class UtilizadorRegistado extends Utilizador {
 
-    private String email;
-    private String nome;
-    private String password;
+    // REMOVER ESTES ATRIBUTOS DUPLICADOS
+    // private String email;
+    // private String nome;
+    // private String password;
 
     // Novas listas adicionadas
     private ListaPessoal listaPessoal;
     private ArrayList<Recurso> vistos;
 
-    public UtilizadorRegistado(String email, String nome, String password) {
-        this.email = email;
-        this.nome = nome;
-        this.password = password;
+    public UtilizadorRegistado(String username, String email, String password) {
 
-        // Inicializar as listas no construtor para evitar erros
+        super(username, email, password);
+
         this.listaPessoal = new ListaPessoal();
         this.vistos = new ArrayList<>();
     }
 
     public String getNome() {
-        return nome;
+
+        return getUsername();
     }
 
+    @Override
     public String getEmail() {
-        return email;
+
+        return super.getEmail();
     }
 
     public boolean temNome(String nome) {
-        return this.nome.equals(nome);
+
+        return getUsername().equals(nome);
     }
 
     public boolean temPassword(String password) {
-        return this.password.equals(password);
+
+        return getPassword().equals(password);
     }
 
     // ==========================================
@@ -43,6 +47,7 @@ public abstract class UtilizadorRegistado {
     // ==========================================
 
     public ListaPessoal getListaPessoal() {
+
         return listaPessoal;
     }
 
@@ -51,12 +56,15 @@ public abstract class UtilizadorRegistado {
     // ==========================================
 
     public void adicionarVisualizado(Recurso r) {
+
         if (!vistos.contains(r)) {
+
             vistos.add(r);
         }
     }
 
     public boolean jaViu(Recurso r) {
+
         return vistos.contains(r);
     }
 
@@ -65,42 +73,39 @@ public abstract class UtilizadorRegistado {
     // ==========================================
 
     public void classificarFilme(Filme filme, int valor) {
+
         if (!jaViu(filme)) {
+
             System.out.println("Tem de ver o filme primeiro.");
-            return; // Sai do método sem lançar exceção
+            return;
         }
 
         for (Classificacao c : filme.getClassificacoes()) {
-            // Nota: Garante que o método getUtilizador() existe na classe Classificacao
+
             if (c.getUtilizador().equals(this)) {
+
                 System.out.println("Já classificou este filme.");
-                return; // Sai do método sem lançar exceção
+                return;
             }
         }
 
-        // Assumindo que o construtor é Classificacao(int, UtilizadorRegistado)
         filme.adicionarClassificacao(new Classificacao(valor, this));
     }
 
     public void comentarFilme(Filme filme, String texto) {
+
         if (!jaViu(filme)) {
+
             System.out.println("Tem de ver o filme primeiro para poder comentar.");
-            return; // Sai do método sem lançar exceção
+            return;
         }
 
-        // Assumindo que o construtor é Comentario(UtilizadorRegistado, String)
         filme.adicionarComentario(new Comentario(this, texto));
     }
 
     @Override
     public String toString() {
-        return nome + " <" + email + ">";
+
+        return getUsername() + " <" + getEmail() + ">";
     }
 }
-//classe abstrata que representa um utilizador registado
-//implements Serializable - necessário para gravar em ficheiro (serialização)
-//Superclass de Admin e Espectador
-//Constroi um utilizador registado
-//verifica username e password correto
-//getPassword() não é adicionado - má pratica de segurança expor a password
-//boolean verificaEmail não usado porque não vamos usar o email para autenticação
