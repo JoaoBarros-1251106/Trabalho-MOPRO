@@ -5,9 +5,9 @@ import org.example.model.DB;
 import org.example.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class MenuGerirAtores {
+
     private DB imdb;
     private String opcao;
 
@@ -19,14 +19,14 @@ public class MenuGerirAtores {
         do {
             System.out.println("\n\n");
             System.out.println("#################################################");
-            System.out.println("#                     MENU                      #");
+            System.out.println("#              GERIR ATORES                     #");
             System.out.println("#################################################");
             System.out.println("#                                               #");
             System.out.println("#  1. Ver atores                                #");
             System.out.println("#  2. Adicionar ator                            #");
             System.out.println("#  3. Remover ator                              #");
-            System.out.println("#  4. Ordenar atores por nome                   #");
-            System.out.println("#  5. Ordenar atores por nº filmes              #");
+            System.out.println("#  4. Atores ordenados por nome                 #");
+            System.out.println("#  5. Atores ordenados por nº de filmes         #");
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
@@ -40,59 +40,38 @@ public class MenuGerirAtores {
                     System.out.println(imdb.listarAtores());
                     break;
                 case "2":
-                    RegistarAtor reg = new RegistarAtor(imdb);
-                    reg.run();
+                    new RegistarAtor(imdb).run();
                     break;
                 case "3":
-                    RemoverAtor remover = new RemoverAtor(imdb);
-                    remover.run();
+                    new RemoverAtor(imdb).run();
                     break;
                 case "4":
-                    ordenarPorNome();
+                    listarAtoresPorNome();
                     break;
                 case "5":
-                    ordenarPorNumeroFilmes();
+                    listarAtoresPorNumFilmes();
                     break;
                 case "0":
                     break;
                 default:
-                    System.out.println("Opção inválida");
-                    break;
+                    System.out.println("Opção inválida!");
             }
         } while (!opcao.equals("0"));
     }
 
-    private void ordenarPorNome() {
-        System.out.println("\n--- Atores Ordenados por Nome ---");
-        ArrayList<Ator> atores = imdb.getAtores();
-
-        if (atores.isEmpty()) {
-            System.out.println("Não existem atores registados.");
-            return;
-        }
-
-        // Ordenação por nome pedida no Passo 11
-        atores.sort(Comparator.comparing(Ator::getNome));
-
+    private void listarAtoresPorNome() {
+        ArrayList<Ator> atores = imdb.listarAtoresPorNome();
+        System.out.println("\n--- Atores por nome ---");
         for (Ator a : atores) {
-            System.out.println(" - " + a.getNome());
+            System.out.println(" - " + a);
         }
     }
 
-    private void ordenarPorNumeroFilmes() {
-        System.out.println("\n--- Atores Ordenados por Nº de Participações ---");
-        ArrayList<Ator> atores = imdb.getAtores();
-
-        if (atores.isEmpty()) {
-            System.out.println("Não existem atores registados.");
-            return;
-        }
-
-        // Ordenação decrescente (do maior número de participações para o menor)
-        atores.sort((a1, a2) -> Integer.compare(a2.getNumeroParticipacoes(), a1.getNumeroParticipacoes()));
-
+    private void listarAtoresPorNumFilmes() {
+        ArrayList<Ator> atores = imdb.listarAtoresPorNumFilmes();
+        System.out.println("\n--- Atores por nº de participações ---");
         for (Ator a : atores) {
-            System.out.println(" - " + a.getNome() + " | Participações: " + a.getNumeroParticipacoes());
+            System.out.println(" - " + a);
         }
     }
 }

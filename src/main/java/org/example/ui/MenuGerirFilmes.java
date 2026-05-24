@@ -1,15 +1,12 @@
 package org.example.ui;
 
-import org.example.model.Ator;
-import org.example.model.DB;
-import org.example.model.Filme;
-import org.example.model.Genero;
+import org.example.model.*;
 import org.example.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class MenuGerirFilmes {
+
     private DB imdb;
     private String opcao;
 
@@ -21,15 +18,16 @@ public class MenuGerirFilmes {
         do {
             System.out.println("\n\n");
             System.out.println("#################################################");
-            System.out.println("#                 GERIR FILMES                  #");
+            System.out.println("#              GERIR FILMES                     #");
             System.out.println("#################################################");
             System.out.println("#                                               #");
-            System.out.println("#  1. Adicionar filme                           #");
-            System.out.println("#  2. Listar filmes                             #");
+            System.out.println("#  1. Listar filmes                             #");
+            System.out.println("#  2. Adicionar filme                           #");
             System.out.println("#  3. Remover filme                             #");
-            System.out.println("#  4. Pesquisar filme                           #");
-            System.out.println("#  5. Ordenar por título                        #");
-            System.out.println("#  6. Ordenar por classificação                 #");
+            System.out.println("#  4. Associar ator a filme                     #");
+            System.out.println("#  5. Adicionar género a filme                  #");
+            System.out.println("#  6. Filmes ordenados por título               #");
+            System.out.println("#  7. Filmes ordenados por classificação        #");
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
@@ -40,142 +38,147 @@ public class MenuGerirFilmes {
 
             switch (opcao) {
                 case "1":
-                    adicionarFilme();
+                    listarFilmes();
                     break;
                 case "2":
-                    System.out.println(imdb.listarFilmes());
+                    adicionarFilme();
                     break;
                 case "3":
                     removerFilme();
                     break;
                 case "4":
-                    pesquisarFilme();
+                    associarAtorFilme();
                     break;
                 case "5":
-                    ordenarPorTitulo();
+                    adicionarGeneroFilme();
                     break;
                 case "6":
-                    ordenarPorClassificacao();
+                    listarFilmesPorTitulo();
+                    break;
+                case "7":
+                    listarFilmesPorClassificacao();
                     break;
                 case "0":
                     break;
                 default:
                     System.out.println("Opção inválida!");
-                    break;
             }
         } while (!opcao.equals("0"));
     }
 
-    private void adicionarFilme() {
-        System.out.println("\n--- Adicionar Filme ---");
-        String titulo = Utils.readLineFromConsole("Introduza o título do filme: ");
-        String anoStr = Utils.readLineFromConsole("Introduza o ano: ");
-        int ano = Integer.parseInt(anoStr);
-        String duracaoStr = Utils.readLineFromConsole("Introduza a duração (min): ");
-        int duracao = Integer.parseInt(duracaoStr);
-
-        System.out.println("\nGéneros disponíveis:");
-        Genero[] generos = Genero.values();
-        for (int i = 0; i < generos.length; i++) {
-            System.out.println(i + " - " + generos[i]);
-        }
-        String genStr = Utils.readLineFromConsole("Escolha o número do género: ");
-        Genero generoEscolhido = generos[Integer.parseInt(genStr)];
-
-        System.out.println("\nAtores disponíveis:");
-        ArrayList<Ator> atores = imdb.getAtores();
-        if (atores.isEmpty()) {
-            System.out.println("ERRO: Não existem atores registados na base de dados.");
+    private void listarFilmes() {
+        ArrayList<Filme> filmes = imdb.getFilmes();
+        if (filmes.isEmpty()) {
+            System.out.println("Não existem filmes registados.");
             return;
         }
-
-        for (int i = 0; i < atores.size(); i++) {
-            System.out.println(i + " - " + atores.get(i).getNome());
+        System.out.println("\n--- Lista de Filmes ---");
+        for (int i = 0; i < filmes.size(); i++) {
+            System.out.println((i + 1) + ". " + filmes.get(i));
         }
-        String atorStr = Utils.readLineFromConsole("Escolha o número do ator: ");
-        Ator atorEscolhido = atores.get(Integer.parseInt(atorStr));
+    }
 
-        Filme novoFilme = new Filme(titulo, ano, duracao, generoEscolhido, atorEscolhido);
-        imdb.adicionarFilme(novoFilme);
-        System.out.println("Filme '" + titulo + "' adicionado com sucesso!");
+    private void adicionarFilme() {
+        System.out.println("\n--- Adicionar Filme ---");
+        String titulo = Utils.readLineFromConsole("Título: ");
+        int ano = Utils.readIntFromConsole("Ano: ");
+        int duracao = Utils.readIntFromConsole("Duração (min): ");
+
+        Filme novoFilme = new Filme(titulo, ano, duracao);
+
+        try {
+            imdb.adicionarRecurso(novoFilme);
+            System.out.println("Filme adicionado! Associa pelo menos 1 género e 1 ator.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
     private void removerFilme() {
-        System.out.println("\n--- Remover Filme ---");
         ArrayList<Filme> filmes = imdb.getFilmes();
-
         if (filmes.isEmpty()) {
             System.out.println("Não existem filmes registados.");
             return;
         }
-
         for (int i = 0; i < filmes.size(); i++) {
-            System.out.println(i + " - " + filmes.get(i).getTitulo());
+            System.out.println((i + 1) + ". " + filmes.get(i).getTitulo());
         }
-
-        String indexStr = Utils.readLineFromConsole("Escolha o número do filme a remover: ");
-        int index = Integer.parseInt(indexStr);
-
-        if (index >= 0 && index < filmes.size()) {
-            Filme f = filmes.get(index);
-            imdb.removerFilme(f);
-            System.out.println("Filme removido com sucesso!");
-        } else {
+        int idx = Utils.readIntFromConsole("Escolha o filme a remover: ") - 1;
+        if (idx < 0 || idx >= filmes.size()) {
             System.out.println("Opção inválida.");
+            return;
         }
+        imdb.removerRecurso(filmes.get(idx));
+        System.out.println("Filme removido com sucesso!");
     }
 
-    private void pesquisarFilme() {
-        System.out.println("\n--- Pesquisar Filme ---");
-        String texto = Utils.readLineFromConsole("Introduza o texto a pesquisar: ");
-        boolean encontrou = false;
-
-        for (int i = 0; i < imdb.getFilmes().size(); i++) {
-            Filme f = imdb.getFilmes().get(i);
-            if (f.correspondePesquisa(texto)) {
-                System.out.println(" - " + f.getTitulo() + " (" + f.getAno() + ")");
-                encontrou = true;
-            }
-        }
-
-        if (!encontrou) {
-            System.out.println("Nenhum filme encontrado.");
-        }
-    }
-
-    private void ordenarPorTitulo() {
-        System.out.println("\n--- Filmes Ordenados por Título ---");
+    private void associarAtorFilme() {
         ArrayList<Filme> filmes = imdb.getFilmes();
-
         if (filmes.isEmpty()) {
             System.out.println("Não existem filmes registados.");
             return;
         }
-
-        // Ordenação por título pedida no Passo 11
-        filmes.sort(Comparator.comparing(Filme::getTitulo));
-
         for (int i = 0; i < filmes.size(); i++) {
-            Filme f = filmes.get(i);
+            System.out.println((i + 1) + ". " + filmes.get(i).getTitulo());
+        }
+        int idx = Utils.readIntFromConsole("Escolha o filme: ") - 1;
+        if (idx < 0 || idx >= filmes.size()) {
+            System.out.println("Opção inválida.");
+            return;
+        }
+        System.out.println(imdb.listarAtores());
+        String nome = Utils.readLineFromConsole("Nome do ator: ");
+        Ator ator = imdb.pesquisaAtor(nome);
+        if (ator == null) {
+            System.out.println("Ator não encontrado.");
+            return;
+        }
+        filmes.get(idx).adicionarAtor(ator);
+        System.out.println("Ator associado com sucesso!");
+    }
+
+    private void adicionarGeneroFilme() {
+        ArrayList<Filme> filmes = imdb.getFilmes();
+        if (filmes.isEmpty()) {
+            System.out.println("Não existem filmes registados.");
+            return;
+        }
+        for (int i = 0; i < filmes.size(); i++) {
+            System.out.println((i + 1) + ". " + filmes.get(i).getTitulo());
+        }
+        int idx = Utils.readIntFromConsole("Escolha o filme: ") - 1;
+        if (idx < 0 || idx >= filmes.size()) {
+            System.out.println("Opção inválida.");
+            return;
+        }
+        Genero[] generos = Genero.values();
+        for (int i = 0; i < generos.length; i++) {
+            System.out.println((i + 1) + ". " + generos[i].getNome());
+        }
+        int idxG = Utils.readIntFromConsole("Escolha o género: ") - 1;
+        if (idxG < 0 || idxG >= generos.length) {
+            System.out.println("Opção inválida.");
+            return;
+        }
+        filmes.get(idx).adicionarGenero(generos[idxG]);
+        System.out.println("Género adicionado com sucesso!");
+    }
+
+    private void listarFilmesPorTitulo() {
+        ArrayList<Filme> filmes = imdb.listarFilmesPorTitulo();
+        System.out.println("\n--- Filmes por título ---");
+        for (Filme f : filmes) {
             System.out.println(" - " + f.getTitulo() + " (" + f.getAno() + ")");
         }
     }
 
-    private void ordenarPorClassificacao() {
-        System.out.println("\n--- Filmes Ordenados por Classificação Média ---");
-        ArrayList<Filme> filmes = imdb.getFilmes();
-
-        if (filmes.isEmpty()) {
-            System.out.println("Não existem filmes registados.");
-            return;
-        }
-
-        // Ordenação por média pedida no Passo 11
-        filmes.sort((f1, f2) -> Double.compare(f2.calcularMediaClassificacoes(), f1.calcularMediaClassificacoes()));
-
-        for (int i = 0; i < filmes.size(); i++) {
-            Filme f = filmes.get(i);
-            System.out.println(" - " + f.getTitulo() + " | Média: " + f.getClassificacaoMedia());
+    private void listarFilmesPorClassificacao() {
+        ArrayList<Filme> filmes = imdb.listarFilmesPorClassificacao();
+        System.out.println("\n--- Filmes por classificação ---");
+        for (Filme f : filmes) {
+            System.out.println(" - " + f.getTitulo()
+                    + " | " + String.format("%.1f", f.getClassificacaoMedia())
+                    + " [" + f.getCategoriaClassificacao() + "]");
         }
     }
 }

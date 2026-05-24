@@ -7,6 +7,7 @@ import org.example.model.UtilizadorRegistado;
 import org.example.utils.Utils;
 
 public class MenuInicial {
+
     private DB imdb;
     private String opcao;
 
@@ -32,37 +33,33 @@ public class MenuInicial {
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 
             if (opcao.equals("1")) {
-                MenuSemLogin ui = new MenuSemLogin(imdb);
-                ui.run();
-
+                new MenuSemLogin(imdb).run();
 
             } else if (opcao.equals("2")) {
                 UtilizadorRegistado ur = null;
                 while (ur == null) {
-                    String nome = Utils.readLineFromConsole("Introduza o username: ");
-                    String password = Utils.readLineFromConsole("Introduza a password: ");
+                    String nome = Utils.readLineFromConsole("Username: ");
+                    String password = Utils.readLineFromConsole("Password: ");
                     try {
                         ur = imdb.login(nome, password);
-                        if (ur == null) {
-                            throw new Exception("Credenciais inválidas");
-                        }
-                        System.out.println("Fez login como: " + ur);
+                        if (ur == null) throw new Exception("Credenciais inválidas.");
+                        System.out.println("Bem-vindo, " + ur.getNome() + "!");
                         if (ur instanceof Admin) {
-                            MenuAdministrador ui = new MenuAdministrador(imdb);
-                            ui.run();
+                            new MenuAdministrador(imdb).run();
                         } else if (ur instanceof Espectador) {
-                            System.out.println("User");
-                            MenuUtilizadorRegistado ui = new MenuUtilizadorRegistado(imdb, (Espectador) ur);
-                            ui.run();
+                            new MenuUtilizadorRegistado(imdb, (Espectador) ur).run();
                         }
                     } catch (Exception e) {
                         System.out.println("ERRO: " + e.getMessage());
+                        String tentar = Utils.readLineFromConsole("Tentar novamente? (S/N): ");
+                        if (tentar.equalsIgnoreCase("N")) break;
                     }
                 }
+
             } else if (!opcao.equals("0")) {
-                System.out.println("Opção inválida");
+                System.out.println("Opção inválida!");
             }
-        }
-        while (!opcao.equals("0"));
+
+        } while (!opcao.equals("0"));
     }
 }
