@@ -1,9 +1,9 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Serie extends Recurso {
-
+public class Serie extends Recurso implements Serializable {
     // Lista de temporadas da série
     private ArrayList<Temporada> temporadas;
 

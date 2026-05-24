@@ -1,9 +1,9 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Filme extends Recurso implements MarcavelComoVisto {
-
+public class Filme extends Recurso implements MarcavelComoVisto, Serializable {
     // Duração do filme em minutos
     private int duracao;
 
