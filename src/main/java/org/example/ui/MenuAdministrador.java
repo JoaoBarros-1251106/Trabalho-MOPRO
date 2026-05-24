@@ -6,6 +6,13 @@ import org.example.utils.Utils;
 
 import java.util.ArrayList;
 
+/**
+ * Classe responsável por apresentar e gerir o menu destinado aos administradores.
+ * Permite a gestão global de atores, recursos (filmes e séries), utilizadores,
+ * bem como a visualização do estado da plataforma e a adição de novos espectadores.
+ */
+
+
 public class MenuAdministrador {
 
     private DB imdb;
@@ -14,6 +21,10 @@ public class MenuAdministrador {
     public MenuAdministrador(DB imdb) {
         this.imdb = imdb;
     }
+
+    /**
+     * Inicia o ciclo de execução do menu do Administrador.
+     */
 
     public void run() {
         do {
@@ -63,7 +74,10 @@ public class MenuAdministrador {
         } while (!opcao.equals("0"));
     }
 
-    // Adiciona um novo espectador à plataforma
+    /**
+     * Adiciona um novo utilizador (espectador) à plataforma solicitando os dados na consola.
+     */
+
     private void adicionarEspectador() {
         String email = Utils.readLineFromConsole("Email: ");
         String nome = Utils.readLineFromConsole("Username: ");
@@ -73,7 +87,10 @@ public class MenuAdministrador {
         System.out.println(imdb.listarUtilizadores());
     }
 
-    // Lista espectadores ordenados por número de filmes vistos
+    /**
+     * Lista os espectadores ordenados de forma descendente pelo número de filmes que já visualizaram.
+     */
+
     private void listarEspectadoresPorFilmesVistos() {
         ArrayList<Espectador> espectadores = imdb.listarEspectadoresPorFilmesVistos();
         System.out.println("\n--- Espectadores por filmes vistos ---");

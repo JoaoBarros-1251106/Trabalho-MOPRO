@@ -5,6 +5,12 @@ import org.example.persistence.Persistencia;
 import org.example.utils.Data;
 import org.example.utils.Utils;
 
+/**
+ * Classe responsável pelo menu inicial de seleção da fonte de dados da plataforma.
+ * Permite carregar dados de demonstração construídos em código, ler o estado guardado
+ * a partir de um ficheiro ou gravar o estado atual num ficheiro.
+ */
+
 public class MenuFonteInfo {
 
     private DB imdb;
@@ -13,6 +19,10 @@ public class MenuFonteInfo {
     public MenuFonteInfo(DB imdb) {
         this.imdb = imdb;
     }
+
+    /**
+     * Inicia o ciclo de execução do menu de escolha da fonte de informação.
+     */
 
     public void run() {
         do {
@@ -74,10 +84,17 @@ public class MenuFonteInfo {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Constrói e retorna uma base de dados (DB) com dados de demonstração iniciais
+     * (utilizadores, atores, filmes e séries predefinidos).
+     */
+
     private static DB construir() {
         DB imdb = new DB("www.imdb.com");
 
-        // Utilizadores
+        /**
+         Utilizadores
+         */
         Admin admin = new Admin("admin@example.com", "admin", "admin");
         imdb.adicionarUtilizador(admin);
 
@@ -87,7 +104,11 @@ public class MenuFonteInfo {
         Espectador pedro = new Espectador("pedro@example.com", "pedro", "qwerty");
         imdb.adicionarUtilizador(pedro);
 
-        // Atores
+
+        /**
+         Atores
+         */
+
         Ator tomHardy = new Ator("Tom Hardy", new Data(1977, 9, 15));
         imdb.adicionarAtor(tomHardy);
 
@@ -100,7 +121,10 @@ public class MenuFonteInfo {
         Ator brianCranston = new Ator("Brian Cranston", new Data(1956, 3, 7));
         imdb.adicionarAtor(brianCranston);
 
-        // Filmes
+        /**
+         Filmes
+         */
+
         try {
             Filme inception = new Filme("Inception", 2010, 148);
             inception.adicionarGenero(Genero.SCI_FI);
@@ -122,7 +146,9 @@ public class MenuFonteInfo {
             goldeneye.marcarComoVisto(pedro);
             imdb.classificarFilme(goldeneye, pedro, 7);
 
-            // Série
+            /**
+             Series
+             */
             Serie breakingBad = new Serie("Breaking Bad", 2008);
             breakingBad.adicionarGenero(Genero.CRIME);
             breakingBad.adicionarAtor(brianCranston);

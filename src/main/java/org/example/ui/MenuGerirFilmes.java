@@ -5,6 +5,12 @@ import org.example.utils.Utils;
 
 import java.util.ArrayList;
 
+/**
+ * Classe que disponibiliza as opções de gestão focadas em filmes.
+ * Engloba funcionalidades como adicionar e remover filmes da base de dados,
+ * assim como associar-lhes géneros, atores e efetuar ordenações por título ou classificação.
+ */
+
 public class MenuGerirFilmes {
 
     private DB imdb;

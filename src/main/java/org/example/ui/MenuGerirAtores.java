@@ -6,6 +6,12 @@ import org.example.utils.Utils;
 
 import java.util.ArrayList;
 
+/**
+ * Classe que gere as operações referentes aos atores da plataforma.
+ * Fornece um menu que permite listar, registar, remover ou apresentar os atores
+ * ordenados por critérios específicos (nome ou número de participações em recursos).
+ */
+
 public class MenuGerirAtores {
 
     private DB imdb;
@@ -14,6 +20,10 @@ public class MenuGerirAtores {
     public MenuGerirAtores(DB imdb) {
         this.imdb = imdb;
     }
+
+    /**
+     * Inicia o ciclo de execução do menu de gestão de atores.
+     */
 
     public void run() {
         do {
@@ -59,6 +69,10 @@ public class MenuGerirAtores {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Imprime a lista de atores ordenados alfabeticamente pelo nome.
+     */
+
     private void listarAtoresPorNome() {
         ArrayList<Ator> atores = imdb.listarAtoresPorNome();
         System.out.println("\n--- Atores por nome ---");
@@ -66,7 +80,9 @@ public class MenuGerirAtores {
             System.out.println(" - " + a);
         }
     }
-
+    /**
+     * Imprime a lista de atores ordenados descendentemente pelo número de participações em recursos.
+     */
     private void listarAtoresPorNumFilmes() {
         ArrayList<Ator> atores = imdb.listarAtoresPorNumFilmes();
         System.out.println("\n--- Atores por nº de participações ---");

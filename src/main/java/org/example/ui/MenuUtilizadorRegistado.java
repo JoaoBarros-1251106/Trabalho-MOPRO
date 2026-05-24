@@ -5,6 +5,11 @@ import org.example.utils.Utils;
 
 import java.util.ArrayList;
 
+/**
+ * Classe que fornece e processa o menu específico para o utilizador com privilégios de Espectador.
+ * Permite uma forte interação com a plataforma, através de marcações de visualizações,
+ * avaliações (classificações), escrita de comentários e administração de uma lista pessoal.
+ */
 public class MenuUtilizadorRegistado {
 
     private DB imdb;

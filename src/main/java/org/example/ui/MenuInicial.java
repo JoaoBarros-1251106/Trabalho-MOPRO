@@ -6,6 +6,12 @@ import org.example.model.Espectador;
 import org.example.model.UtilizadorRegistado;
 import org.example.utils.Utils;
 
+/**
+ * Classe que apresenta o primeiro menu interativo principal da aplicação.
+ * É a partir daqui que o utilizador decide se deseja aceder à plataforma
+ * num modo de visualização livre (sem autenticação) ou realizar o login na sua conta.
+ */
+
 public class MenuInicial {
 
     private DB imdb;

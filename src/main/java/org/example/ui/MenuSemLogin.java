@@ -8,6 +8,12 @@ import org.example.utils.Utils;
 
 import java.util.ArrayList;
 
+/**
+ * Classe que representa a interface para visitantes ou utilizadores não autenticados.
+ * Fornece funcionalidades limitadas apenas de leitura e pesquisa, como listar e
+ * consultar os recursos (filmes, séries) e os atores presentes na base de dados.
+ */
+
 public class MenuSemLogin {
 
     private DB imdb;

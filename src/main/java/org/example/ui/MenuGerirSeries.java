@@ -5,6 +5,12 @@ import org.example.utils.Utils;
 
 import java.util.ArrayList;
 
+/**
+ * Classe responsável por agregar as operações de gestão associadas a Séries.
+ * Permite a criação e listagem de séries, criação e estruturação de temporadas e episódios,
+ * bem como a associação de atributos (géneros à série, atores aos episódios).
+ */
+
 public class MenuGerirSeries {
 
     private DB imdb;

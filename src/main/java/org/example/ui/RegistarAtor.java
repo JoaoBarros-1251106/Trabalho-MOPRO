@@ -5,6 +5,12 @@ import org.example.model.DB;
 import org.example.utils.Data;
 import org.example.utils.Utils;
 
+/**
+ * Classe responsável por gerir a interface e o fluxo de registo de um novo ator.
+ * Solicita os dados ao utilizador (nome e data de nascimento), apresenta um resumo
+ * da informação introduzida e pede confirmação antes de gravar na base de dados.
+ */
+
 public class RegistarAtor {
     private DB imdb;
 

@@ -3,6 +3,12 @@ package org.example.ui;
 import org.example.model.DB;
 import org.example.utils.Utils;
 
+/**
+ * Submenu direcionado à escolha do tipo de recurso a gerir pelo administrador.
+ * Funciona como intermediário para reencaminhar o utilizador para a gestão
+ * específica de filmes ou de séries.
+ */
+
 public class MenuGerirRecursos {
 
     private DB imdb;
