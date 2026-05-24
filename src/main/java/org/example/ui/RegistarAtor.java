@@ -14,6 +14,12 @@ import org.example.utils.Utils;
 public class RegistarAtor {
     private DB imdb;
 
+    /**
+     * Construtor da classe RegistarAtor.
+     *
+     * @param imdb A base de dados principal para onde o novo ator será gravado.
+     */
+
     public RegistarAtor(DB imdb) {
         this.imdb = imdb;
     }
@@ -31,9 +37,22 @@ public class RegistarAtor {
         }
     }
 
+    /**
+     * Apresenta na consola a informação textual do objeto Ator instanciado.
+     *
+     * @param ator Instância da classe Ator cujos dados se pretendem exibir.
+     */
+
     private void apresentaDados(Ator ator) {
         System.out.println(ator);
     }
+
+    /**
+     * Pede via consola a leitura do nome e da data de nascimento
+     * com o objetivo de construir o objeto do novo ator.
+     *
+     * @return Um novo objeto Ator instanciado com a informação lida através do utilitário de consola.
+     */
 
     private static Ator introduzDados() {
         String nome = Utils.readLineFromConsole("Introduza o nome do ator: ");

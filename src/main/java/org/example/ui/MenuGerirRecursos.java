@@ -14,6 +14,12 @@ public class MenuGerirRecursos {
     private DB imdb;
     private String opcao;
 
+    /**
+     * Construtor da classe MenuGerirRecursos.
+     *
+     * @param imdb A base de dados principal que detém os recursos do sistema.
+     */
+
     public MenuGerirRecursos(DB imdb) {
         this.imdb = imdb;
     }

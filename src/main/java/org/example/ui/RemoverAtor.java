@@ -14,6 +14,12 @@ public class RemoverAtor {
 
     private DB imdb;
 
+    /**
+     * Construtor da classe RemoverAtor.
+     *
+     * @param imdb A base de dados que contém o registo do ator a ser removido.
+     */
+
     public RemoverAtor(DB imdb) {
         this.imdb = imdb;
     }
@@ -23,7 +29,7 @@ public class RemoverAtor {
         String nome = Utils.readLineFromConsole("Nome do ator a remover: ");
         Ator ator = imdb.pesquisaAtor(nome);
 
-        // Verifica se o ator existe antes de continuar
+
         if (ator == null) {
             System.out.println("Ator não encontrado.");
             return;

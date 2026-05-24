@@ -85,8 +85,10 @@ public class MenuFonteInfo {
     }
 
     /**
-     * Constrói e retorna uma base de dados (DB) com dados de demonstração iniciais
-     * (utilizadores, atores, filmes e séries predefinidos).
+     * Constrói e retorna uma base de dados (DB) com dados de demonstração predefinidos.
+     * Insere utilizadores (administrador e espectadores), atores, filmes e séries para testes.
+     *
+     * @return Uma instância preenchida da base de dados (DB).
      */
 
     private static DB construir() {

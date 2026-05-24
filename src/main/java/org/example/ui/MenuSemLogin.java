@@ -19,6 +19,12 @@ public class MenuSemLogin {
     private DB imdb;
     private String opcao;
 
+    /**
+     * Construtor da classe MenuSemLogin.
+     *
+     * @param imdb A base de dados que fornece as listas para leitura.
+     */
+
     public MenuSemLogin(DB imdb) {
         this.imdb = imdb;
     }
@@ -67,6 +73,10 @@ public class MenuSemLogin {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Apresenta uma listagem simplificada de todos os filmes da plataforma.
+     */
+
     private void listarFilmes() {
         ArrayList<Filme> filmes = imdb.getFilmes();
         if (filmes.isEmpty()) {
@@ -78,6 +88,10 @@ public class MenuSemLogin {
             System.out.println(" - " + f);
         }
     }
+
+    /**
+     * Apresenta uma listagem simplificada de todas as séries da plataforma.
+     */
 
     private void listarSeries() {
         ArrayList<Serie> series = imdb.getSeries();
@@ -91,6 +105,11 @@ public class MenuSemLogin {
         }
     }
 
+    /**
+     * Lê uma string introduzida pelo utilizador e procura filmes ou séries
+     * que contenham esse texto no seu título.
+     */
+
     private void pesquisarRecursos() {
         String texto = Utils.readLineFromConsole("Pesquisar (título): ");
         ArrayList<Recurso> resultado = imdb.pesquisarRecursos(texto);
@@ -103,6 +122,11 @@ public class MenuSemLogin {
             }
         }
     }
+
+    /**
+     * Lê uma string introduzida pelo utilizador e procura atores
+     * que contenham esse texto no seu nome.
+     */
 
     private void pesquisarAtores() {
         String texto = Utils.readLineFromConsole("Pesquisar ator (nome): ");

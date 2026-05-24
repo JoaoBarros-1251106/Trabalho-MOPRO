@@ -17,6 +17,12 @@ public class MenuInicial {
     private DB imdb;
     private String opcao;
 
+    /**
+     * Construtor da classe MenuInicial.
+     *
+     * @param imdb A base de dados principal da aplicação.
+     */
+
     public MenuInicial(DB imdb) {
         this.imdb = imdb;
     }

@@ -75,7 +75,8 @@ public class MenuAdministrador {
     }
 
     /**
-     * Adiciona um novo utilizador (espectador) à plataforma solicitando os dados na consola.
+     * Adiciona um novo utilizador (espectador) à plataforma.
+     * Solicita os dados na consola (email, username e password) e regista-o na base de dados.
      */
 
     private void adicionarEspectador() {
@@ -89,8 +90,8 @@ public class MenuAdministrador {
 
     /**
      * Lista os espectadores ordenados de forma descendente pelo número de filmes que já visualizaram.
+     * Imprime os nomes dos espectadores na consola.
      */
-
     private void listarEspectadoresPorFilmesVistos() {
         ArrayList<Espectador> espectadores = imdb.listarEspectadoresPorFilmesVistos();
         System.out.println("\n--- Espectadores por filmes vistos ---");

@@ -72,6 +72,10 @@ public class MenuGerirFilmes {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Lista todos os filmes atualmente registados na plataforma.
+     */
+
     private void listarFilmes() {
         ArrayList<Filme> filmes = imdb.getFilmes();
         if (filmes.isEmpty()) {
@@ -83,6 +87,11 @@ public class MenuGerirFilmes {
             System.out.println((i + 1) + ". " + filmes.get(i));
         }
     }
+
+    /**
+     * Solicita os dados básicos para um novo filme (título, ano e duração)
+     * e adiciona-o à base de dados.
+     */
 
     private void adicionarFilme() {
         System.out.println("\n--- Adicionar Filme ---");
@@ -99,6 +108,11 @@ public class MenuGerirFilmes {
             System.out.println("Erro: " + e.getMessage());
         }
     }
+
+    /**
+     * Apresenta a lista de filmes, solicita a escolha de um deles
+     * e remove-o da plataforma.
+     */
 
     private void removerFilme() {
         ArrayList<Filme> filmes = imdb.getFilmes();
@@ -117,6 +131,11 @@ public class MenuGerirFilmes {
         imdb.removerRecurso(filmes.get(idx));
         System.out.println("Filme removido com sucesso!");
     }
+
+    /**
+     * Solicita a seleção de um filme e a introdução do nome de um ator.
+     * Após pesquisar o ator, associa-o ao filme escolhido.
+     */
 
     private void associarAtorFilme() {
         ArrayList<Filme> filmes = imdb.getFilmes();
@@ -142,6 +161,10 @@ public class MenuGerirFilmes {
         filmes.get(idx).adicionarAtor(ator);
         System.out.println("Ator associado com sucesso!");
     }
+
+    /**
+     * Solicita a seleção de um filme e de um género, associando-os em seguida.
+     */
 
     private void adicionarGeneroFilme() {
         ArrayList<Filme> filmes = imdb.getFilmes();
@@ -170,6 +193,10 @@ public class MenuGerirFilmes {
         System.out.println("Género adicionado com sucesso!");
     }
 
+    /**
+     * Lista todos os filmes ordenados alfabeticamente pelo título.
+     */
+
     private void listarFilmesPorTitulo() {
         ArrayList<Filme> filmes = imdb.listarFilmesPorTitulo();
         System.out.println("\n--- Filmes por título ---");
@@ -177,6 +204,11 @@ public class MenuGerirFilmes {
             System.out.println(" - " + f.getTitulo() + " (" + f.getAno() + ")");
         }
     }
+
+    /**
+     * Lista todos os filmes ordenados pela sua classificação média,
+     * juntamente com a categoria correspondente à classificação obtida.
+     */
 
     private void listarFilmesPorClassificacao() {
         ArrayList<Filme> filmes = imdb.listarFilmesPorClassificacao();

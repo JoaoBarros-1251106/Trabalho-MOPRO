@@ -16,6 +16,13 @@ public class MenuUtilizadorRegistado {
     private Espectador utilizador;
     private String opcao;
 
+    /**
+     * Construtor da classe MenuUtilizadorRegistado.
+     *
+     * @param imdb A base de dados que contém toda a informação da plataforma.
+     * @param utilizador A instância de Espectador que está atualmente autenticada.
+     */
+
     public MenuUtilizadorRegistado(DB imdb, Espectador utilizador) {
         this.imdb = imdb;
         this.utilizador = utilizador;
@@ -77,6 +84,11 @@ public class MenuUtilizadorRegistado {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Apresenta a lista de filmes disponíveis e marca o filme selecionado
+     * como "Visto" pelo espectador logado.
+     */
+
     private void marcarFilmeComoVisto() {
         ArrayList<Filme> filmes = imdb.getFilmes();
         if (filmes.isEmpty()) { System.out.println("Não há filmes."); return; }
@@ -94,6 +106,11 @@ public class MenuUtilizadorRegistado {
         }
     }
 
+    /**
+     * Utiliza a navegação hierárquica para encontrar um episódio e
+     * marca-o como "Visto" pelo espetador logado.
+     */
+
     private void marcarEpisodioComoVisto() {
         Episodio ep = escolherEpisodio();
         if (ep == null) return;
@@ -104,6 +121,10 @@ public class MenuUtilizadorRegistado {
             System.out.println("Erro: " + e.getMessage());
         }
     }
+
+    /**
+     * Permite que o espetador atribua uma pontuação numérica a um filme específico.
+     */
 
     private void classificarFilme() {
         ArrayList<Filme> filmes = imdb.getFilmes();
@@ -123,6 +144,10 @@ public class MenuUtilizadorRegistado {
         }
     }
 
+    /**
+     * Permite que o espetador atribua uma pontuação numérica a um episódio específico.
+     */
+
     private void classificarEpisodio() {
         Episodio ep = escolherEpisodio();
         if (ep == null) return;
@@ -134,6 +159,10 @@ public class MenuUtilizadorRegistado {
             System.out.println("Erro: " + e.getMessage());
         }
     }
+
+    /**
+     * Adiciona um comentário textual feito pelo espetador logado a um filme selecionado.
+     */
 
     private void comentarFilme() {
         ArrayList<Filme> filmes = imdb.getFilmes();
@@ -148,6 +177,10 @@ public class MenuUtilizadorRegistado {
         System.out.println("Comentário adicionado!");
     }
 
+    /**
+     * Adiciona um comentário textual feito pelo espetador logado a um episódio selecionado.
+     */
+
     private void comentarEpisodio() {
         Episodio ep = escolherEpisodio();
         if (ep == null) return;
@@ -155,6 +188,10 @@ public class MenuUtilizadorRegistado {
         ep.adicionarComentario(new Comentario(utilizador, texto));
         System.out.println("Comentário adicionado!");
     }
+
+    /**
+     * Abre um submenu para gestão da lista de recursos pessoais (favoritos/watchlist) do utilizador.
+     */
 
     private void menuListaPessoal() {
         String op;
@@ -191,6 +228,10 @@ public class MenuUtilizadorRegistado {
         } while (!op.equals("0"));
     }
 
+    /**
+     * Adiciona um filme selecionado do sistema à lista pessoal do utilizador logado.
+     */
+
     private void adicionarFilmeLista() {
         ArrayList<Filme> filmes = imdb.getFilmes();
         if (filmes.isEmpty()) { System.out.println("Não há filmes."); return; }
@@ -202,6 +243,11 @@ public class MenuUtilizadorRegistado {
         utilizador.getListaPessoal().adicionarFilme(filmes.get(idx));
         System.out.println("Filme adicionado à lista pessoal.");
     }
+
+    /**
+     * Remove um filme da lista pessoal do utilizador logado.
+     */
+
 
     private void removerFilmeLista() {
         ArrayList<Filme> filmes = utilizador.getListaPessoal().getFilmes();
@@ -215,12 +261,20 @@ public class MenuUtilizadorRegistado {
         System.out.println("Filme removido da lista pessoal.");
     }
 
+    /**
+     * Adiciona um episódio escolhido pelo utilizador à sua lista pessoal.
+     */
+
     private void adicionarEpisodioLista() {
         Episodio ep = escolherEpisodio();
         if (ep == null) return;
         utilizador.getListaPessoal().adicionarEpisodio(ep);
         System.out.println("Episódio adicionado à lista pessoal.");
     }
+
+    /**
+     * Remove um episódio da lista pessoal do utilizador logado.
+     */
 
     private void removerEpisodioLista() {
         ArrayList<Episodio> eps = utilizador.getListaPessoal().getEpisodios();
@@ -234,7 +288,14 @@ public class MenuUtilizadorRegistado {
         System.out.println("Episódio removido da lista pessoal.");
     }
 
-    // Método auxiliar para navegar até um episódio
+    /**
+     * Método auxiliar interativo que solicita ao utilizador a escolha em cascata de uma série,
+     * uma temporada e um episódio para o retornar de forma a poder ser utilizado em outras operações.
+     *
+     * @return O Episodio escolhido pelo utilizador ou null se a operação for cancelada ou inválida.
+     */
+
+
     private Episodio escolherEpisodio() {
         ArrayList<Serie> series = imdb.getSeries();
         if (series.isEmpty()) { System.out.println("Não há séries."); return null; }

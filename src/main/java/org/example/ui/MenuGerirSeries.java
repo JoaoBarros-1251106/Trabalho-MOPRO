@@ -16,6 +16,12 @@ public class MenuGerirSeries {
     private DB imdb;
     private String opcao;
 
+    /**
+     * Construtor da classe MenuGerirSeries.
+     *
+     * @param imdb A base de dados na qual as séries serão geridas.
+     */
+
     public MenuGerirSeries(DB imdb) {
         this.imdb = imdb;
     }
