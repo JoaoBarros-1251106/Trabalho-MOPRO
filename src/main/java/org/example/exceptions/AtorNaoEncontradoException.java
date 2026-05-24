@@ -1,4 +1,11 @@
 package org.example.exceptions;
 
-public class AtorNaoEncontradoException {
+/**
+ * Exceção lançada quando um ator não é encontrado na plataforma.
+ */
+public class AtorNaoEncontradoException extends Exception {
+
+    public AtorNaoEncontradoException(String mensagem) {
+        super(mensagem);
+    }
 }

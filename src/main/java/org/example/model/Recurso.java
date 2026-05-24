@@ -64,13 +64,3 @@ public abstract class Recurso implements Pesquisavel, Serializable {
         return titulo + " (" + ano + ") | Géneros: " + generos;
     }
 }
-    @Override
-    public int hashCode() {
-        return Objects.hash(titulo.toLowerCase(), ano);
-    }
-
-    @Override
-    public String toString() {
-        return titulo + " (" + ano + ") | Géneros: " + generos;
-    }
-}
