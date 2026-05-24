@@ -66,7 +66,7 @@ public class MenuFonteInfo {
                     System.out.println("Opção inválida!");
             }
 
-            if (imdb != null && !opcao.equals("0")) {
+            if (imdb != null && !opcao.equals("0") && !opcao.equals("3")) {
                 System.out.println(imdb);
                 new MenuInicial(imdb).run();
             }
