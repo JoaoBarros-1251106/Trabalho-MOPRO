@@ -1,6 +1,12 @@
 package org.example.model;
 
+/**
+ * Enumeração dos géneros cinematográficos permitidos, baseados nos géneros IMDb.
+ * O uso de enum garante que só existem géneros válidos.
+ */
+
 public enum Genero {
+
     ACTION("Action"),
     ADVENTURE("Adventure"),
     ANIMATION("Animation"),
@@ -21,15 +27,31 @@ public enum Genero {
     WAR("War"),
     WESTERN("Western");
 
+    /** Nome legível do género. */
     private final String nome;
+
+    /**
+     * Constrói um género com o nome legível.
+     * @param nome nome do género
+     */
 
     Genero(String nome) {
         this.nome = nome;
     }
 
+    /**
+     * Devolve o nome legível do género.
+     * @return nome do género
+     */
+
     public String getNome() {
         return nome;
     }
+
+    /**
+     * Devolve o nome legível do género.
+     * @return nome do género
+     */
 
     @Override
     public String toString() {
