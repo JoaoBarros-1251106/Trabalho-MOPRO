@@ -4,7 +4,7 @@ public class Espectador extends UtilizadorRegistado {
 
     private ListaPessoal listaPessoal;
 
-    public Espectador(String nome,String email, String password) {
+    public Espectador(String email, String nome, String password) {
         super(email, nome, password);
         this.listaPessoal = new ListaPessoal();
     }

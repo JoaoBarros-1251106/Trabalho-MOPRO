@@ -1,8 +1,9 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Temporada {
+public class Temporada implements Serializable {
 
     private int numero;
     private int ano;

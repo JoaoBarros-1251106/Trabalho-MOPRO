@@ -1,111 +1,42 @@
 package org.example.model;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public abstract class UtilizadorRegistado extends Utilizador {
+public abstract class UtilizadorRegistado implements Serializable {
 
-    // REMOVER ESTES ATRIBUTOS DUPLICADOS
-    // private String email;
-    // private String nome;
-    // private String password;
+    private String email;
+    private String nome;
+    private String password;
 
-    // Novas listas adicionadas
-    private ListaPessoal listaPessoal;
-    private ArrayList<Recurso> vistos;
-
-    public UtilizadorRegistado(String username, String email, String password) {
-
-        super(username, email, password);
-
-        this.listaPessoal = new ListaPessoal();
-        this.vistos = new ArrayList<>();
+    public UtilizadorRegistado(String email, String nome, String password) {
+        this.email = email;
+        this.nome = nome;
+        this.password = password;
     }
 
     public String getNome() {
-
-        return getUsername();
+        return nome;
     }
 
-    @Override
     public String getEmail() {
-
-        return super.getEmail();
+        return email;
     }
 
     public boolean temNome(String nome) {
-
-        return getUsername().equals(nome);
+        return this.nome.equals(nome);
     }
 
     public boolean temPassword(String password) {
-
-        return getPassword().equals(password);
-    }
-
-    // ==========================================
-    // LISTA PESSOAL
-    // ==========================================
-
-    public ListaPessoal getListaPessoal() {
-
-        return listaPessoal;
-    }
-
-    // ==========================================
-    // HISTÓRICO DE VISUALIZAÇÕES
-    // ==========================================
-
-    public void adicionarVisualizado(Recurso r) {
-
-        if (!vistos.contains(r)) {
-
-            vistos.add(r);
-        }
-    }
-
-    public boolean jaViu(Recurso r) {
-
-        return vistos.contains(r);
-    }
-
-    // ==========================================
-    // INTERAÇÕES (CLASSIFICAR E COMENTAR)
-    // ==========================================
-
-    public void classificarFilme(Filme filme, int valor) {
-
-        if (!jaViu(filme)) {
-
-            System.out.println("Tem de ver o filme primeiro.");
-            return;
-        }
-
-        for (Classificacao c : filme.getClassificacoes()) {
-
-            if (c.getUtilizador().equals(this)) {
-
-                System.out.println("Já classificou este filme.");
-                return;
-            }
-        }
-
-        filme.adicionarClassificacao(new Classificacao(valor, this));
-    }
-
-    public void comentarFilme(Filme filme, String texto) {
-
-        if (!jaViu(filme)) {
-
-            System.out.println("Tem de ver o filme primeiro para poder comentar.");
-            return;
-        }
-
-        filme.adicionarComentario(new Comentario(this, texto));
+        return this.password.equals(password);
     }
 
     @Override
     public String toString() {
-
-        return getUsername() + " <" + getEmail() + ">";
+        return nome + " <" + email + ">";
     }
 }
+
+//classe abstrata que representa um utilizador registado
+//implements Serializable - necessário para gravar em ficheiro
+//superclasse de Admin e Espectador
+//getPassword() não é adicionado - má prática de segurança

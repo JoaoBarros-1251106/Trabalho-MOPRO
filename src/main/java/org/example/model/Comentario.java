@@ -1,17 +1,19 @@
 package org.example.model;
 
-public class Comentario {
+import java.io.Serializable;
 
-    private UtilizadorRegistado utilizador; // Mudou de Espectador para UtilizadorRegistado
+public class Comentario implements Serializable {
+
+    private Espectador espectador;
     private String texto;
 
-    public Comentario(UtilizadorRegistado utilizador, String texto) {
-        this.utilizador = utilizador;
+    public Comentario(Espectador espectador, String texto) {
+        this.espectador = espectador;
         this.texto = texto;
     }
 
-    public UtilizadorRegistado getUtilizador() {
-        return utilizador;
+    public Espectador getEspectador() {
+        return espectador;
     }
 
     public String getTexto() {
@@ -20,6 +22,6 @@ public class Comentario {
 
     @Override
     public String toString() {
-        return utilizador.getNome() + ": " + texto;
+        return espectador.getNome() + ": " + texto;
     }
 }

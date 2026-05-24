@@ -1,38 +1,36 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Objects;
 
-
-public abstract class Recurso implements Pesquisavel {
+public abstract class Recurso implements Pesquisavel, Serializable {
 
     private String titulo;
     private int ano;
     private ArrayList<Genero> generos;
     private ArrayList<Ator> atores;
 
-
-    public Recurso(String titulo, int ano, Genero genero) {
+    public Recurso(String titulo, int ano) {
         this.titulo = titulo;
         this.ano = ano;
         this.generos = new ArrayList<>();
         this.atores = new ArrayList<>();
-        this.generos.add(genero); // Garante que tem pelo menos 1 género
     }
 
     public String getTitulo() {
-        return titulo; }
+        return titulo;
+    }
+
     public int getAno() {
         return ano;
     }
 
-    // Retornar uma cópia da lista garante segurança (Encapsulamento):
     public ArrayList<Genero> getGeneros() {
-        return new ArrayList<>(generos);
+        return generos;
     }
 
     public ArrayList<Ator> getAtores() {
-        return new ArrayList<>(atores);
+        return atores;
     }
 
     public void adicionarGenero(Genero genero) {
@@ -47,7 +45,13 @@ public abstract class Recurso implements Pesquisavel {
         }
     }
 
+    // Verifica se existe um recurso com o mesmo título e ano
+    public boolean isDuplicado(String titulo, int ano) {
+        return this.titulo.equalsIgnoreCase(titulo) && this.ano == ano;
+    }
+
     public abstract double getClassificacaoMedia();
+
     public abstract String getCategoriaClassificacao();
 
     @Override
@@ -55,15 +59,11 @@ public abstract class Recurso implements Pesquisavel {
         return titulo.toLowerCase().contains(texto.toLowerCase());
     }
 
-
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Recurso recurso = (Recurso) obj;
-        return ano == recurso.ano && titulo.equalsIgnoreCase(recurso.titulo);
+    public String toString() {
+        return titulo + " (" + ano + ") | Géneros: " + generos;
     }
-
+}
     @Override
     public int hashCode() {
         return Objects.hash(titulo.toLowerCase(), ano);
