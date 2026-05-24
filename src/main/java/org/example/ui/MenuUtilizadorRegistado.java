@@ -296,6 +296,7 @@ public class MenuUtilizadorRegistado {
      */
 
 
+
     private Episodio escolherEpisodio() {
         ArrayList<Serie> series = imdb.getSeries();
         if (series.isEmpty()) { System.out.println("Não há séries."); return null; }

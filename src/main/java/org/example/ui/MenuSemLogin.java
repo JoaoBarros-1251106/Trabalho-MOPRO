@@ -123,6 +123,7 @@ public class MenuSemLogin {
         }
     }
 
+
     /**
      * Lê uma string introduzida pelo utilizador e procura atores
      * que contenham esse texto no seu nome.

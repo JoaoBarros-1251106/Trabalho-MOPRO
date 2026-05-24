@@ -197,6 +197,7 @@ public class MenuGerirFilmes {
      * Lista todos os filmes ordenados alfabeticamente pelo título.
      */
 
+
     private void listarFilmesPorTitulo() {
         ArrayList<Filme> filmes = imdb.listarFilmesPorTitulo();
         System.out.println("\n--- Filmes por título ---");

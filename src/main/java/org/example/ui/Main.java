@@ -8,6 +8,7 @@ import org.example.model.*;
  * encaminhando o fluxo inicial para o menu de seleção da fonte de informação.
  */
 
+
 public class Main {
     /**
      * Ponto de entrada do sistema.

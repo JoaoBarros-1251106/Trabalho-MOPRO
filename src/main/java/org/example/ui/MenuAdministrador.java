@@ -88,6 +88,7 @@ public class MenuAdministrador {
         System.out.println(imdb.listarUtilizadores());
     }
 
+
     /**
      * Lista os espectadores ordenados de forma descendente pelo número de filmes que já visualizaram.
      * Imprime os nomes dos espectadores na consola.

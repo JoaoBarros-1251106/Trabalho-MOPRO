@@ -43,6 +43,7 @@ public class RegistarAtor {
      * @param ator Instância da classe Ator cujos dados se pretendem exibir.
      */
 
+
     private void apresentaDados(Ator ator) {
         System.out.println(ator);
     }

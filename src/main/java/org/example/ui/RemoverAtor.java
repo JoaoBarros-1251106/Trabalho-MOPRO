@@ -20,6 +20,7 @@ public class RemoverAtor {
      * @param imdb A base de dados que contém o registo do ator a ser removido.
      */
 
+
     public RemoverAtor(DB imdb) {
         this.imdb = imdb;
     }

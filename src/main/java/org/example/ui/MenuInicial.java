@@ -12,6 +12,7 @@ import org.example.utils.Utils;
  * num modo de visualização livre (sem autenticação) ou realizar o login na sua conta.
  */
 
+
 public class MenuInicial {
 
     private DB imdb;

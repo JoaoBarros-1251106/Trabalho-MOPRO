@@ -24,6 +24,7 @@ public class MenuFonteInfo {
      * Inicia o ciclo de execução do menu de escolha da fonte de informação.
      */
 
+
     public void run() {
         do {
             System.out.println("\n\n");
@@ -90,6 +91,7 @@ public class MenuFonteInfo {
      *
      * @return Uma instância preenchida da base de dados (DB).
      */
+
 
     private static DB construir() {
         DB imdb = new DB("www.imdb.com");

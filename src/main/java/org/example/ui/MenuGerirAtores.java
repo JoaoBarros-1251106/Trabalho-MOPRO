@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * ordenados por critérios específicos (nome ou número de participações em recursos).
  */
 
+
 public class MenuGerirAtores {
 
     private DB imdb;
