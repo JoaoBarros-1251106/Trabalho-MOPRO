@@ -10,23 +10,22 @@ import java.util.ArrayList;
  * Permite a criação e listagem de séries, criação e estruturação de temporadas e episódios,
  * bem como a associação de atributos (géneros à série, atores aos episódios).
  */
-
-
 public class MenuGerirSeries {
 
     private DB imdb;
     private String opcao;
 
     /**
-     * Construtor da classe MenuGerirSeries.
-     *
-     * @param imdb A base de dados na qual as séries serão geridas.
+     * Constrói o menu de gestão de séries.
+     * @param imdb base de dados da plataforma
      */
-
     public MenuGerirSeries(DB imdb) {
         this.imdb = imdb;
     }
 
+    /**
+     * Inicia o ciclo de execução do menu de gestão de séries.
+     */
     public void run() {
         do {
             System.out.println("\n\n");
@@ -75,6 +74,9 @@ public class MenuGerirSeries {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Lista todas as séries registadas na plataforma.
+     */
     private void listarSeries() {
         ArrayList<Serie> series = imdb.getSeries();
         if (series.isEmpty()) {
@@ -87,6 +89,9 @@ public class MenuGerirSeries {
         }
     }
 
+    /**
+     * Solicita os dados básicos de uma nova série (título e ano) e adiciona-a à base de dados.
+     */
     private void adicionarSerie() {
         System.out.println("\n--- Adicionar Série ---");
         String titulo = Utils.readLineFromConsole("Título: ");
@@ -100,6 +105,9 @@ public class MenuGerirSeries {
         }
     }
 
+    /**
+     * Solicita a seleção de uma série e os dados da nova temporada e adiciona-a à série.
+     */
     private void adicionarTemporada() {
         ArrayList<Serie> series = imdb.getSeries();
         if (series.isEmpty()) {
@@ -120,6 +128,9 @@ public class MenuGerirSeries {
         System.out.println("Temporada adicionada com sucesso!");
     }
 
+    /**
+     * Solicita a seleção de uma série, temporada e os dados do novo episódio e adiciona-o.
+     */
     private void adicionarEpisodio() {
         ArrayList<Serie> series = imdb.getSeries();
         if (series.isEmpty()) {
@@ -154,6 +165,9 @@ public class MenuGerirSeries {
         System.out.println("Episódio adicionado com sucesso!");
     }
 
+    /**
+     * Solicita a seleção de uma série, temporada, episódio e ator e associa o ator ao episódio.
+     */
     private void associarAtorEpisodio() {
         ArrayList<Serie> series = imdb.getSeries();
         if (series.isEmpty()) {
@@ -205,6 +219,9 @@ public class MenuGerirSeries {
         System.out.println("Ator associado com sucesso!");
     }
 
+    /**
+     * Solicita a seleção de uma série e de um género e associa-os.
+     */
     private void adicionarGeneroSerie() {
         ArrayList<Serie> series = imdb.getSeries();
         if (series.isEmpty()) {

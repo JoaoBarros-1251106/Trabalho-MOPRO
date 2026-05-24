@@ -6,25 +6,25 @@ import org.example.utils.Data;
 import org.example.utils.Utils;
 
 /**
- * Classe responsável pelo menu inicial de seleção da fonte de dados da plataforma.
- * Permite carregar dados de demonstração construídos em código, ler o estado guardado
- * a partir de um ficheiro ou gravar o estado atual num ficheiro.
+ * Menu inicial de escolha da fonte de dados.
+ * Permite carregar dados demo, carregar de ficheiro ou gravar dados.
  */
-
 public class MenuFonteInfo {
 
     private DB imdb;
     private String opcao;
 
+    /**
+     * Constrói o menu de fonte de informação.
+     * @param imdb base de dados (pode ser null inicialmente)
+     */
     public MenuFonteInfo(DB imdb) {
         this.imdb = imdb;
     }
 
     /**
-     * Inicia o ciclo de execução do menu de escolha da fonte de informação.
+     * Executa o menu de fonte de informação.
      */
-
-
     public void run() {
         do {
             System.out.println("\n\n");
@@ -86,19 +86,13 @@ public class MenuFonteInfo {
     }
 
     /**
-     * Constrói e retorna uma base de dados (DB) com dados de demonstração predefinidos.
-     * Insere utilizadores (administrador e espectadores), atores, filmes e séries para testes.
-     *
-     * @return Uma instância preenchida da base de dados (DB).
+     * Constrói uma DB com dados de demonstração.
+     * @return base de dados preenchida com dados demo
      */
-
-
     private static DB construir() {
         DB imdb = new DB("www.imdb.com");
 
-        /**
-         Utilizadores
-         */
+        // Utilizadores
         Admin admin = new Admin("admin@example.com", "admin", "admin");
         imdb.adicionarUtilizador(admin);
 
@@ -108,11 +102,7 @@ public class MenuFonteInfo {
         Espectador pedro = new Espectador("pedro@example.com", "pedro", "qwerty");
         imdb.adicionarUtilizador(pedro);
 
-
-        /**
-         Atores
-         */
-
+        // Atores
         Ator tomHardy = new Ator("Tom Hardy", new Data(1977, 9, 15));
         imdb.adicionarAtor(tomHardy);
 
@@ -125,10 +115,7 @@ public class MenuFonteInfo {
         Ator brianCranston = new Ator("Brian Cranston", new Data(1956, 3, 7));
         imdb.adicionarAtor(brianCranston);
 
-        /**
-         Filmes
-         */
-
+        // Filmes
         try {
             Filme inception = new Filme("Inception", 2010, 148);
             inception.adicionarGenero(Genero.SCI_FI);
@@ -150,9 +137,7 @@ public class MenuFonteInfo {
             goldeneye.marcarComoVisto(pedro);
             imdb.classificarFilme(goldeneye, pedro, 7);
 
-            /**
-             Series
-             */
+            // Series
             Serie breakingBad = new Serie("Breaking Bad", 2008);
             breakingBad.adicionarGenero(Genero.CRIME);
             breakingBad.adicionarAtor(brianCranston);

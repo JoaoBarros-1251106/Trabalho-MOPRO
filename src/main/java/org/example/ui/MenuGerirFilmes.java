@@ -10,16 +10,22 @@ import java.util.ArrayList;
  * Engloba funcionalidades como adicionar e remover filmes da base de dados,
  * assim como associar-lhes géneros, atores e efetuar ordenações por título ou classificação.
  */
-
 public class MenuGerirFilmes {
 
     private DB imdb;
     private String opcao;
 
+    /**
+     * Constrói o menu de gestão de filmes.
+     * @param imdb base de dados da plataforma
+     */
     public MenuGerirFilmes(DB imdb) {
         this.imdb = imdb;
     }
 
+    /**
+     * Inicia o ciclo de execução do menu de gestão de filmes.
+     */
     public void run() {
         do {
             System.out.println("\n\n");
@@ -75,7 +81,6 @@ public class MenuGerirFilmes {
     /**
      * Lista todos os filmes atualmente registados na plataforma.
      */
-
     private void listarFilmes() {
         ArrayList<Filme> filmes = imdb.getFilmes();
         if (filmes.isEmpty()) {
@@ -92,7 +97,6 @@ public class MenuGerirFilmes {
      * Solicita os dados básicos para um novo filme (título, ano e duração)
      * e adiciona-o à base de dados.
      */
-
     private void adicionarFilme() {
         System.out.println("\n--- Adicionar Filme ---");
         String titulo = Utils.readLineFromConsole("Título: ");
@@ -113,7 +117,6 @@ public class MenuGerirFilmes {
      * Apresenta a lista de filmes, solicita a escolha de um deles
      * e remove-o da plataforma.
      */
-
     private void removerFilme() {
         ArrayList<Filme> filmes = imdb.getFilmes();
         if (filmes.isEmpty()) {
@@ -133,10 +136,9 @@ public class MenuGerirFilmes {
     }
 
     /**
-     * Solicita a seleção de um filme e a introdução do nome de um ator.
-     * Após pesquisar o ator, associa-o ao filme escolhido.
+     * Solicita a seleção de um filme e o nome de um ator,
+     * pesquisa o ator e associa-o ao filme escolhido.
      */
-
     private void associarAtorFilme() {
         ArrayList<Filme> filmes = imdb.getFilmes();
         if (filmes.isEmpty()) {
@@ -163,9 +165,8 @@ public class MenuGerirFilmes {
     }
 
     /**
-     * Solicita a seleção de um filme e de um género, associando-os em seguida.
+     * Solicita a seleção de um filme e de um género e associa-os.
      */
-
     private void adicionarGeneroFilme() {
         ArrayList<Filme> filmes = imdb.getFilmes();
         if (filmes.isEmpty()) {
@@ -196,8 +197,6 @@ public class MenuGerirFilmes {
     /**
      * Lista todos os filmes ordenados alfabeticamente pelo título.
      */
-
-
     private void listarFilmesPorTitulo() {
         ArrayList<Filme> filmes = imdb.listarFilmesPorTitulo();
         System.out.println("\n--- Filmes por título ---");
@@ -207,10 +206,9 @@ public class MenuGerirFilmes {
     }
 
     /**
-     * Lista todos os filmes ordenados pela sua classificação média,
-     * juntamente com a categoria correspondente à classificação obtida.
+     * Lista todos os filmes ordenados pela classificação média (decrescente),
+     * com a categoria correspondente.
      */
-
     private void listarFilmesPorClassificacao() {
         ArrayList<Filme> filmes = imdb.listarFilmesPorClassificacao();
         System.out.println("\n--- Filmes por classificação ---");

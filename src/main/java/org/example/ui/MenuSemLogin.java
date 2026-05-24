@@ -13,22 +13,22 @@ import java.util.ArrayList;
  * Fornece funcionalidades limitadas apenas de leitura e pesquisa, como listar e
  * consultar os recursos (filmes, séries) e os atores presentes na base de dados.
  */
-
 public class MenuSemLogin {
 
     private DB imdb;
     private String opcao;
 
     /**
-     * Construtor da classe MenuSemLogin.
-     *
-     * @param imdb A base de dados que fornece as listas para leitura.
+     * Constrói o menu sem login.
+     * @param imdb base de dados da plataforma
      */
-
     public MenuSemLogin(DB imdb) {
         this.imdb = imdb;
     }
 
+    /**
+     * Inicia o ciclo de execução do menu sem login.
+     */
     public void run() {
         do {
             System.out.println("\n\n");
@@ -74,9 +74,8 @@ public class MenuSemLogin {
     }
 
     /**
-     * Apresenta uma listagem simplificada de todos os filmes da plataforma.
+     * Apresenta uma listagem de todos os filmes da plataforma.
      */
-
     private void listarFilmes() {
         ArrayList<Filme> filmes = imdb.getFilmes();
         if (filmes.isEmpty()) {
@@ -90,9 +89,8 @@ public class MenuSemLogin {
     }
 
     /**
-     * Apresenta uma listagem simplificada de todas as séries da plataforma.
+     * Apresenta uma listagem de todas as séries da plataforma.
      */
-
     private void listarSeries() {
         ArrayList<Serie> series = imdb.getSeries();
         if (series.isEmpty()) {
@@ -106,10 +104,8 @@ public class MenuSemLogin {
     }
 
     /**
-     * Lê uma string introduzida pelo utilizador e procura filmes ou séries
-     * que contenham esse texto no seu título.
+     * Pesquisa filmes e séries cujo título contenha o texto introduzido pelo utilizador.
      */
-
     private void pesquisarRecursos() {
         String texto = Utils.readLineFromConsole("Pesquisar (título): ");
         ArrayList<Recurso> resultado = imdb.pesquisarRecursos(texto);
@@ -123,12 +119,9 @@ public class MenuSemLogin {
         }
     }
 
-
     /**
-     * Lê uma string introduzida pelo utilizador e procura atores
-     * que contenham esse texto no seu nome.
+     * Pesquisa atores cujo nome contenha o texto introduzido pelo utilizador.
      */
-
     private void pesquisarAtores() {
         String texto = Utils.readLineFromConsole("Pesquisar ator (nome): ");
         ArrayList<org.example.model.Ator> resultado = imdb.pesquisarAtores(texto);

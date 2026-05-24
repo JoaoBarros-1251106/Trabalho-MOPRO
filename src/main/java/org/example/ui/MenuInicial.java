@@ -11,23 +11,23 @@ import org.example.utils.Utils;
  * É a partir daqui que o utilizador decide se deseja aceder à plataforma
  * num modo de visualização livre (sem autenticação) ou realizar o login na sua conta.
  */
-
-
 public class MenuInicial {
 
     private DB imdb;
     private String opcao;
 
     /**
-     * Construtor da classe MenuInicial.
-     *
-     * @param imdb A base de dados principal da aplicação.
+     * Constrói o menu inicial.
+     * @param imdb base de dados da plataforma
      */
-
     public MenuInicial(DB imdb) {
         this.imdb = imdb;
     }
 
+    /**
+     * Inicia o ciclo de execução do menu inicial.
+     * Permite aceder sem login ou autenticar como administrador ou espectador.
+     */
     public void run() {
         do {
             System.out.println("\n\n");

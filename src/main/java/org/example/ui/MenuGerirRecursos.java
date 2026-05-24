@@ -8,23 +8,22 @@ import org.example.utils.Utils;
  * Funciona como intermediário para reencaminhar o utilizador para a gestão
  * específica de filmes ou de séries.
  */
-
-
 public class MenuGerirRecursos {
 
     private DB imdb;
     private String opcao;
 
     /**
-     * Construtor da classe MenuGerirRecursos.
-     *
-     * @param imdb A base de dados principal que detém os recursos do sistema.
+     * Constrói o menu de gestão de recursos.
+     * @param imdb base de dados da plataforma
      */
-
     public MenuGerirRecursos(DB imdb) {
         this.imdb = imdb;
     }
 
+    /**
+     * Inicia o ciclo de execução do menu de gestão de recursos.
+     */
     public void run() {
         do {
             System.out.println("\n\n");

@@ -3,19 +3,13 @@ package org.example.ui;
 import org.example.model.*;
 
 /**
- * Classe principal da aplicação.
- * Contém o ponto de entrada (método main) que inicia a execução do programa,
- * encaminhando o fluxo inicial para o menu de seleção da fonte de informação.
+ * Classe principal que inicia a aplicação.
  */
-
-
 public class Main {
+
     /**
-     * Ponto de entrada do sistema.
-     * Inicializa o contexto da plataforma enviando a referência da base de dados (nula inicialmente)
-     * para o menu responsável pelo carregamento da fonte de informação.
-     *
-     * @param args Argumentos de linha de comandos passados no arranque da aplicação.
+     * Método principal — ponto de entrada da aplicação.
+     * @param args argumentos da linha de comandos (não utilizados)
      */
     public static void main(String[] args) {
         DB imdb = null;
