@@ -1,0 +1,252 @@
+@startuml
+
+' ===================== INTERFACES =====================
+
+interface Pesquisavel {
+    + correspondePesquisa(texto: String): boolean
+}
+
+interface MarcavelComoVisto {
+    + isVisto(espectador: Espectador): boolean
+    + marcarComoVisto(espectador: Espectador): void
+}
+
+' ===================== ENUMS =====================
+
+enum Genero << enumeration >> {
+    ACTION
+    ADVENTURE
+    ANIMATION
+    BIOGRAPHY
+    COMEDY
+    CRIME
+    DOCUMENTARY
+    DRAMA
+    FAMILY
+    FANTASY
+    HISTORY
+    HORROR
+    MUSICAL
+    MYSTERY
+    ROMANCE
+    SCI_FI
+    THRILLER
+    WAR
+    WESTERN
+    + getNome(): String
+}
+
+' ===================== UTILIZADORES =====================
+
+abstract class UtilizadorRegistado {
+    - email: String
+    - nome: String
+    - password: String
+    + getNome(): String
+    + getEmail(): String
+    + temNome(nome: String): boolean
+    + temPassword(password: String): boolean
+}
+
+class Admin {
+    + Admin(email: String, nome: String, password: String)
+}
+
+class Espectador {
+    - listaPessoal: ListaPessoal
+    + getListaPessoal(): ListaPessoal
+}
+
+class ListaPessoal {
+    - filmes: ArrayList
+    - episodios: ArrayList
+    + adicionarFilme(f: Filme): void
+    + removerFilme(f: Filme): void
+    + adicionarEpisodio(e: Episodio): void
+    + removerEpisodio(e: Episodio): void
+    + getFilmes(): ArrayList
+    + getEpisodios(): ArrayList
+}
+
+' ===================== ATORES =====================
+
+class Ator {
+    - nome: String
+    - dataNascimento: Data
+    + getNome(): String
+    + temNome(nome: String): boolean
+    + correspondePesquisa(texto: String): boolean
+}
+
+' ===================== RECURSOS =====================
+
+abstract class Recurso {
+    - titulo: String
+    - ano: int
+    - generos: ArrayList
+    - atores: ArrayList
+    + getTitulo(): String
+    + getAno(): int
+    + adicionarGenero(g: Genero): void
+    + adicionarAtor(a: Ator): void
+    + isDuplicado(titulo: String, ano: int): boolean
+    + getClassificacaoMedia(): double
+    + getCategoriaClassificacao(): String
+    + correspondePesquisa(texto: String): boolean
+}
+
+class Filme {
+    - duracao: int
+    - classificacoes: ArrayList
+    - comentarios: ArrayList
+    - vistos: ArrayList
+    + getDuracao(): int
+    + adicionarClassificacao(c: Classificacao): void
+    + adicionarComentario(c: Comentario): void
+    + jaClassificou(e: Espectador): boolean
+    + getClassificacaoMedia(): double
+    + getCategoriaClassificacao(): String
+    + isVisto(e: Espectador): boolean
+    + marcarComoVisto(e: Espectador): void
+}
+
+class Serie {
+    - temporadas: ArrayList
+    + adicionarTemporada(t: Temporada): void
+    + getTemporadas(): ArrayList
+    + getTodosEpisodios(): ArrayList
+    + getClassificacaoMedia(): double
+    + getCategoriaClassificacao(): String
+}
+
+class Temporada {
+    - numero: int
+    - ano: int
+    - episodios: ArrayList
+    + getNumero(): int
+    + adicionarEpisodio(e: Episodio): void
+    + getEpisodios(): ArrayList
+}
+
+class Episodio {
+    - titulo: String
+    - numero: int
+    - duracaoMinutos: int
+    - atores: ArrayList
+    - classificacoes: ArrayList
+    - comentarios: ArrayList
+    - vistos: ArrayList
+    + getTitulo(): String
+    + adicionarAtor(a: Ator): void
+    + jaClassificou(e: Espectador): boolean
+    + getClassificacaoMedia(): double
+    + isVisto(e: Espectador): boolean
+    + marcarComoVisto(e: Espectador): void
+    + correspondePesquisa(texto: String): boolean
+}
+
+class Classificacao {
+    - valor: int
+    - espectador: Espectador
+    + getValor(): int
+    + getEspectador(): Espectador
+    + isDoEspectador(e: Espectador): boolean
+}
+
+class Comentario {
+    - texto: String
+    - espectador: Espectador
+    + getTexto(): String
+    + getEspectador(): Espectador
+}
+
+' ===================== DB =====================
+
+class DB {
+    - url: String
+    - lstUtilizadores: ArrayList
+    - lstAtores: ArrayList
+    - lstRecursos: ArrayList
+    + adicionarUtilizador(u: UtilizadorRegistado): void
+    + login(username: String, password: String): UtilizadorRegistado
+    + adicionarAtor(a: Ator): void
+    + removerAtor(a: Ator): void
+    + adicionarRecurso(r: Recurso): void
+    + removerRecurso(r: Recurso): void
+    + getFilmes(): ArrayList
+    + getSeries(): ArrayList
+    + classificarFilme(f: Filme, e: Espectador, valor: int): void
+    + classificarEpisodio(ep: Episodio, e: Espectador, valor: int): void
+    + listarFilmesPorTitulo(): ArrayList
+    + listarFilmesPorClassificacao(): ArrayList
+    + listarAtoresPorNome(): ArrayList
+    + listarAtoresPorNumFilmes(): ArrayList
+    + listarEspectadoresPorFilmesVistos(): ArrayList
+}
+
+' ===================== EXCEÇÕES =====================
+
+class RecursoDuplicadoException {
+    + RecursoDuplicadoException(mensagem: String)
+}
+
+class ClassificacaoInvalidaException {
+    + ClassificacaoInvalidaException(mensagem: String)
+}
+
+class AtorNaoEncontradoException {
+    + AtorNaoEncontradoException(mensagem: String)
+}
+
+' ===================== PERSISTÊNCIA =====================
+
+class Persistencia {
+    - FICHEIRO: String
+    + gravarDados(db: DB): boolean
+    + lerDados(): DB
+}
+
+' ===================== RELAÇÕES =====================
+
+' Herança
+UtilizadorRegistado <|-- Admin
+UtilizadorRegistado <|-- Espectador
+Recurso <|-- Filme
+Recurso <|-- Serie
+
+' Interfaces
+Pesquisavel <|.. Ator
+Pesquisavel <|.. Recurso
+Pesquisavel <|.. Episodio
+MarcavelComoVisto <|.. Filme
+MarcavelComoVisto <|.. Episodio
+
+' Composição
+Espectador *-- ListaPessoal
+Serie *-- Temporada
+Temporada *-- Episodio
+
+' Agregação
+DB o-- UtilizadorRegistado
+DB o-- Ator
+DB o-- Recurso
+
+' Associações
+Filme --> Classificacao
+Filme --> Comentario
+Episodio --> Classificacao
+Episodio --> Comentario
+Classificacao --> Espectador
+Comentario --> Espectador
+Recurso --> Genero
+Recurso --> Ator
+Episodio --> Ator
+ListaPessoal --> Filme
+ListaPessoal --> Episodio
+
+' Exceções
+Exception <|-- RecursoDuplicadoException
+Exception <|-- ClassificacaoInvalidaException
+Exception <|-- AtorNaoEncontradoException
+
+@enduml
