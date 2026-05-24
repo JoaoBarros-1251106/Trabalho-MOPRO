@@ -1,71 +1,66 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Serie extends Recurso {
-
+public class Serie extends Recurso implements Serializable {
+    // Lista de temporadas da série
     private ArrayList<Temporada> temporadas;
-    private ArrayList<Classificacao> classificacoes; // Adicionado conforme pediste
 
-    private static final double LIMIAR_MEDIO_SERIE = 5.0;
-    private static final double LIMIAR_BOM_SERIE = 7.8;
-
-    public Serie(String titulo, int ano, Genero genero) {
-        super(titulo, ano, genero); // O título, ano e género são enviados para o Recurso
+    public Serie(String titulo, int ano) {
+        super(titulo, ano);
         this.temporadas = new ArrayList<>();
-        this.classificacoes = new ArrayList<>();
     }
 
-    // ==========================================
-    // GESTÃO DE TEMPORADAS
-    // ==========================================
-
     public void adicionarTemporada(Temporada temporada) {
-        if (!temporadas.contains(temporada)) {
-            temporadas.add(temporada);
-        }
+        temporadas.add(temporada);
     }
 
     public ArrayList<Temporada> getTemporadas() {
-        return new ArrayList<>(temporadas); // Proteção da lista (encapsulamento)
+        return temporadas;
     }
 
-    // ==========================================
-    // CLASSIFICAÇÕES
-    // ==========================================
-
-    public void adicionarClassificacao(Classificacao classificacao) {
-        classificacoes.add(classificacao);
-    }
-
-    public double calcularMediaClassificacoes() {
-        if (classificacoes.isEmpty()) {
-            return 0.0;
+    // Pesquisa uma temporada pelo número
+    public Temporada getTemporada(int numero) {
+        for (Temporada t : temporadas) {
+            if (t.getNumero() == numero) return t;
         }
-
-        double soma = 0;
-        for (Classificacao c : classificacoes) {
-            soma += c.getValor();
-        }
-
-        return soma / classificacoes.size();
+        return null;
     }
 
-    // ==========================================
-    // MÉTODOS HERDADOS DE RECURSO
-    // ==========================================
+    // Devolve todos os episódios de todas as temporadas
+    public ArrayList<Episodio> getTodosEpisodios() {
+        ArrayList<Episodio> todos = new ArrayList<>();
+        for (Temporada t : temporadas) {
+            todos.addAll(t.getEpisodios());
+        }
+        return todos;
+    }
 
+    // Calcula a média das classificações de todos os episódios
     @Override
     public double getClassificacaoMedia() {
-        return calcularMediaClassificacoes();
+        ArrayList<Episodio> todos = getTodosEpisodios();
+        if (todos.isEmpty()) return 0.0;
+        double soma = 0;
+        int count = 0;
+        for (Episodio e : todos) {
+            if (!e.getClassificacoes().isEmpty()) {
+                soma += e.getClassificacaoMedia();
+                count++;
+            }
+        }
+        if (count == 0) return 0.0;
+        return soma / count;
     }
 
+    // Fraco < 5, Médio entre 5 e 7.8, Bom > 7.8
     @Override
     public String getCategoriaClassificacao() {
-        double media = calcularMediaClassificacoes();
+        double media = getClassificacaoMedia();
         if (media == 0.0) return "Sem classificação";
-        if (media < LIMIAR_MEDIO_SERIE) return "Fraco";
-        if (media <= LIMIAR_BOM_SERIE) return "Médio";
+        if (media < 5) return "Fraco";
+        if (media <= 7.8) return "Médio";
         return "Bom";
     }
 

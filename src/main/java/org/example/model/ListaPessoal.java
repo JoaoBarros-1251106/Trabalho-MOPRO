@@ -1,48 +1,60 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ListaPessoal {
+public class ListaPessoal implements Serializable {
 
-    private ArrayList<Recurso> recursos;
+    // Lista de filmes guardados
+    private ArrayList<Filme> filmes;
+
+    // Lista de episódios guardados
+    private ArrayList<Episodio> episodios;
 
     public ListaPessoal() {
-        this.recursos = new ArrayList<>();
+        this.filmes = new ArrayList<>();
+        this.episodios = new ArrayList<>();
     }
 
-    public void adicionar(Recurso r) {
-        if (!recursos.contains(r)) {
-            recursos.add(r);
-        } else {
-            System.out.println("Este recurso já está na tua lista pessoal.");
+    public void adicionarFilme(Filme filme) {
+        if (!filmes.contains(filme)) {
+            filmes.add(filme);
         }
     }
 
-    public void remover(Recurso r) {
-        recursos.remove(r);
+    public void removerFilme(Filme filme) {
+        filmes.remove(filme);
     }
 
-    public ArrayList<Recurso> getRecursos() {
-        // Retorna uma cópia da lista para garantir segurança (Encapsulamento)
-        return new ArrayList<>(recursos);
+    public void adicionarEpisodio(Episodio episodio) {
+        if (!episodios.contains(episodio)) {
+            episodios.add(episodio);
+        }
+    }
+
+    public void removerEpisodio(Episodio episodio) {
+        episodios.remove(episodio);
+    }
+
+    public ArrayList<Filme> getFilmes() {
+        return filmes;
+    }
+
+    public ArrayList<Episodio> getEpisodios() {
+        return episodios;
     }
 
     @Override
     public String toString() {
-        String texto = "=== Lista Pessoal ===\n";
-
-        if (recursos.isEmpty()) {
-            texto += " (VAZIA)\n";
-        } else {
-            texto += "Total de itens: " + recursos.size() + "\n";
-            for (Recurso r : recursos) {
-                texto += " - " + r.getTitulo() + "\n";
-            }
+        StringBuilder sb = new StringBuilder("Lista Pessoal\n");
+        sb.append("Filmes (").append(filmes.size()).append("):\n");
+        for (Filme f : filmes) {
+            sb.append(" - ").append(f.getTitulo()).append("\n");
         }
-
-        return texto;
+        sb.append("Episódios (").append(episodios.size()).append("):\n");
+        for (Episodio ep : episodios) {
+            sb.append(" - ").append(ep.getTitulo()).append("\n");
+        }
+        return sb.toString();
     }
 }
-//lista de filmes e episodios
-//lista pessoal vazia
-//contains - verifica se já existe para não duplicar

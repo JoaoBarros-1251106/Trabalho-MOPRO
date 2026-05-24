@@ -1,11 +1,16 @@
 package org.example.model;
 
 public interface MarcavelComoVisto {
-    boolean isVisto(UtilizadorRegistado utilizador);
-    void marcarComoVisto(UtilizadorRegistado utilizador);
+
+    // Verifica se o espectador já marcou como visto
+    boolean isVisto(Espectador espectador);
+
+    // Marca como visto — lança exceção se já foi marcado antes
+    void marcarComoVisto(Espectador espectador) throws Exception;
 }
+
 //implementada por Filme e Episodio
-//boolean verifica se o espcatador já marcou como visto
+//boolean verifica se o espectador já marcou como visto
 //throws Exception - há situações em que o marcar como visto não deve ser permitido
 //ex: já tinha sido marcado com visto
-//em vez de ignorar, o metodo lança uma exceçao com uma mensagem de erro
+//em vez de ignorar, o método lança uma exceção com uma mensagem de erro

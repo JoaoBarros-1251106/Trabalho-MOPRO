@@ -1,14 +1,12 @@
 package org.example.ui;
 
-import org.example.model.DB;
-import org.example.model.Espectador;
-import org.example.model.Filme;
-import org.example.model.Recurso;
+import org.example.model.*;
 import org.example.utils.Utils;
 
 import java.util.ArrayList;
 
 public class MenuUtilizadorRegistado {
+
     private DB imdb;
     private Espectador utilizador;
     private String opcao;
@@ -22,16 +20,17 @@ public class MenuUtilizadorRegistado {
         do {
             System.out.println("\n\n");
             System.out.println("#################################################");
-            System.out.println("#               MENU UTILIZADOR                 #");
+            System.out.println("#         MENU - " + utilizador.getNome());
             System.out.println("#################################################");
             System.out.println("#                                               #");
-            System.out.println("#  1. Adicionar à lista pessoal                 #");
-            System.out.println("#  2. Remover da lista                          #");
-            System.out.println("#  3. Consultar lista                           #");
-            System.out.println("#  4. Marcar como visto                         #");
-            System.out.println("#  5. Classificar filme                         #");
+            System.out.println("#  1. Pesquisar e visualizar                    #");
+            System.out.println("#  2. Marcar filme como visto                   #");
+            System.out.println("#  3. Marcar episódio como visto                #");
+            System.out.println("#  4. Classificar filme                         #");
+            System.out.println("#  5. Classificar episódio                      #");
             System.out.println("#  6. Comentar filme                            #");
-            System.out.println("#  7. Ver filmes/séries disponíveis             #");
+            System.out.println("#  7. Comentar episódio                         #");
+            System.out.println("#  8. Gerir lista pessoal                       #");
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
@@ -42,167 +41,218 @@ public class MenuUtilizadorRegistado {
 
             switch (opcao) {
                 case "1":
-                    adicionarALista();
+                    new MenuSemLogin(imdb).run();
                     break;
                 case "2":
-                    removerDaLista();
+                    marcarFilmeComoVisto();
                     break;
                 case "3":
-                    consultarLista();
+                    marcarEpisodioComoVisto();
                     break;
                 case "4":
-                    marcarComoVisto();
+                    classificarFilme();
                     break;
                 case "5":
-                    classificarFilme();
+                    classificarEpisodio();
                     break;
                 case "6":
                     comentarFilme();
                     break;
                 case "7":
-                    System.out.println(imdb.listarFilmes());
-                    System.out.println(imdb.listarSeries());
+                    comentarEpisodio();
+                    break;
+                case "8":
+                    menuListaPessoal();
                     break;
                 case "0":
                     break;
                 default:
                     System.out.println("Opção inválida!");
-                    break;
             }
         } while (!opcao.equals("0"));
     }
 
-    // ==========================================
-    // 1. ADICIONAR À LISTA PESSOAL
-    // ==========================================
-    private void adicionarALista() {
-        System.out.println("\n--- Adicionar à Lista Pessoal ---");
+    private void marcarFilmeComoVisto() {
         ArrayList<Filme> filmes = imdb.getFilmes();
-
-        if (filmes.isEmpty()) {
-            System.out.println("Não existem filmes disponíveis na plataforma.");
-            return;
-        }
-
+        if (filmes.isEmpty()) { System.out.println("Não há filmes."); return; }
         for (int i = 0; i < filmes.size(); i++) {
-            System.out.println(i + " - " + filmes.get(i).getTitulo());
+            System.out.println((i + 1) + ". " + filmes.get(i).getTitulo()
+                    + (filmes.get(i).isVisto(utilizador) ? " [VISTO]" : ""));
         }
-
-        String escolhaStr = Utils.readLineFromConsole("Escolha o número do filme para adicionar: ");
-        int index = Integer.parseInt(escolhaStr);
-        Filme f = filmes.get(index);
-
-        utilizador.getListaPessoal().adicionar(f);
-        System.out.println("Adicionado com sucesso à tua lista pessoal!");
+        int idx = Utils.readIntFromConsole("Escolha o filme: ") - 1;
+        if (idx < 0 || idx >= filmes.size()) { System.out.println("Inválido."); return; }
+        try {
+            filmes.get(idx).marcarComoVisto(utilizador);
+            System.out.println("Filme marcado como visto!");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
-    // ==========================================
-    // 2. REMOVER DA LISTA PESSOAL
-    // ==========================================
-    private void removerDaLista() {
-        System.out.println("\n--- Remover da Lista Pessoal ---");
-        ArrayList<Recurso> recursos = utilizador.getListaPessoal().getRecursos();
-
-        if (recursos.isEmpty()) {
-            System.out.println("A tua lista pessoal está vazia.");
-            return;
+    private void marcarEpisodioComoVisto() {
+        Episodio ep = escolherEpisodio();
+        if (ep == null) return;
+        try {
+            ep.marcarComoVisto(utilizador);
+            System.out.println("Episódio marcado como visto!");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
         }
-
-        for (int i = 0; i < recursos.size(); i++) {
-            System.out.println(i + " - " + recursos.get(i).getTitulo());
-        }
-
-        String escolhaStr = Utils.readLineFromConsole("Escolha o número do recurso a remover: ");
-        int index = Integer.parseInt(escolhaStr);
-        Recurso r = recursos.get(index);
-
-        utilizador.getListaPessoal().remover(r);
-        System.out.println("Removido com sucesso da tua lista!");
     }
 
-    // ==========================================
-    // 3. CONSULTAR LISTA PESSOAL
-    // ==========================================
-    private void consultarLista() {
-        System.out.println("\n" + utilizador.getListaPessoal());
-    }
-
-    // ==========================================
-    // 4. MARCAR COMO VISTO
-    // ==========================================
-    private void marcarComoVisto() {
-        System.out.println("\n--- Marcar Filme como Visto ---");
-        ArrayList<Filme> filmes = imdb.getFilmes();
-
-        if (filmes.isEmpty()) {
-            System.out.println("Não existem filmes disponíveis na plataforma.");
-            return;
-        }
-
-        for (int i = 0; i < filmes.size(); i++) {
-            System.out.println(i + " - " + filmes.get(i).getTitulo());
-        }
-
-        String escolhaStr = Utils.readLineFromConsole("Escolha o número do filme: ");
-        int index = Integer.parseInt(escolhaStr);
-        Filme filme = filmes.get(index);
-
-        // A linha exata que pediste
-        filme.marcarComoVisto(utilizador);
-
-        System.out.println("Filme '" + filme.getTitulo() + "' marcado como visto!");
-    }
-
-    // ==========================================
-    // 5. CLASSIFICAR FILME
-    // ==========================================
     private void classificarFilme() {
-        System.out.println("\n--- Classificar Filme ---");
         ArrayList<Filme> filmes = imdb.getFilmes();
-
-        if (filmes.isEmpty()) {
-            System.out.println("Não existem filmes disponíveis na plataforma.");
-            return;
-        }
-
+        if (filmes.isEmpty()) { System.out.println("Não há filmes."); return; }
         for (int i = 0; i < filmes.size(); i++) {
-            System.out.println(i + " - " + filmes.get(i).getTitulo());
+            System.out.println((i + 1) + ". " + filmes.get(i).getTitulo()
+                    + (filmes.get(i).isVisto(utilizador) ? " [VISTO]" : " [NÃO VISTO]"));
         }
-
-        String escolhaStr = Utils.readLineFromConsole("Escolha o número do filme a classificar: ");
-        int index = Integer.parseInt(escolhaStr);
-        Filme filme = filmes.get(index);
-
-        String notaStr = Utils.readLineFromConsole("Introduza a classificação (ex: 1 a 10): ");
-        int nota = Integer.parseInt(notaStr);
-
-        // A lógica de verificar se já viu está embutida na classe UtilizadorRegistado
-        utilizador.classificarFilme(filme, nota);
+        int idx = Utils.readIntFromConsole("Escolha o filme: ") - 1;
+        if (idx < 0 || idx >= filmes.size()) { System.out.println("Inválido."); return; }
+        int valor = Utils.readIntFromConsole("Classificação (1-10): ");
+        try {
+            imdb.classificarFilme(filmes.get(idx), utilizador, valor);
+            System.out.println("Classificação registada!");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
-    // ==========================================
-    // 6. COMENTAR FILME
-    // ==========================================
+    private void classificarEpisodio() {
+        Episodio ep = escolherEpisodio();
+        if (ep == null) return;
+        int valor = Utils.readIntFromConsole("Classificação (1-10): ");
+        try {
+            imdb.classificarEpisodio(ep, utilizador, valor);
+            System.out.println("Classificação registada!");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
     private void comentarFilme() {
-        System.out.println("\n--- Comentar Filme ---");
         ArrayList<Filme> filmes = imdb.getFilmes();
-
-        if (filmes.isEmpty()) {
-            System.out.println("Não existem filmes disponíveis na plataforma.");
-            return;
-        }
-
+        if (filmes.isEmpty()) { System.out.println("Não há filmes."); return; }
         for (int i = 0; i < filmes.size(); i++) {
-            System.out.println(i + " - " + filmes.get(i).getTitulo());
+            System.out.println((i + 1) + ". " + filmes.get(i).getTitulo());
         }
+        int idx = Utils.readIntFromConsole("Escolha o filme: ") - 1;
+        if (idx < 0 || idx >= filmes.size()) { System.out.println("Inválido."); return; }
+        String texto = Utils.readLineFromConsole("Comentário: ");
+        filmes.get(idx).adicionarComentario(new Comentario(utilizador, texto));
+        System.out.println("Comentário adicionado!");
+    }
 
-        String escolhaStr = Utils.readLineFromConsole("Escolha o número do filme para comentar: ");
-        int index = Integer.parseInt(escolhaStr);
-        Filme filme = filmes.get(index);
+    private void comentarEpisodio() {
+        Episodio ep = escolherEpisodio();
+        if (ep == null) return;
+        String texto = Utils.readLineFromConsole("Comentário: ");
+        ep.adicionarComentario(new Comentario(utilizador, texto));
+        System.out.println("Comentário adicionado!");
+    }
 
-        String texto = Utils.readLineFromConsole("Escreva o seu comentário: ");
+    private void menuListaPessoal() {
+        String op;
+        do {
+            System.out.println("\n--- Lista Pessoal ---");
+            System.out.println("1. Ver lista");
+            System.out.println("2. Adicionar filme");
+            System.out.println("3. Remover filme");
+            System.out.println("4. Adicionar episódio");
+            System.out.println("5. Remover episódio");
+            System.out.println("0. Voltar");
+            op = Utils.readLineFromConsole("Opção: ");
+            switch (op) {
+                case "1":
+                    System.out.println(utilizador.getListaPessoal());
+                    break;
+                case "2":
+                    adicionarFilmeLista();
+                    break;
+                case "3":
+                    removerFilmeLista();
+                    break;
+                case "4":
+                    adicionarEpisodioLista();
+                    break;
+                case "5":
+                    removerEpisodioLista();
+                    break;
+                case "0":
+                    break;
+                default:
+                    System.out.println("Inválido.");
+            }
+        } while (!op.equals("0"));
+    }
 
-        // A lógica de verificar se já viu está embutida na classe UtilizadorRegistado
-        utilizador.comentarFilme(filme, texto);
+    private void adicionarFilmeLista() {
+        ArrayList<Filme> filmes = imdb.getFilmes();
+        if (filmes.isEmpty()) { System.out.println("Não há filmes."); return; }
+        for (int i = 0; i < filmes.size(); i++) {
+            System.out.println((i + 1) + ". " + filmes.get(i).getTitulo());
+        }
+        int idx = Utils.readIntFromConsole("Escolha o filme: ") - 1;
+        if (idx < 0 || idx >= filmes.size()) { System.out.println("Inválido."); return; }
+        utilizador.getListaPessoal().adicionarFilme(filmes.get(idx));
+        System.out.println("Filme adicionado à lista pessoal.");
+    }
+
+    private void removerFilmeLista() {
+        ArrayList<Filme> filmes = utilizador.getListaPessoal().getFilmes();
+        if (filmes.isEmpty()) { System.out.println("Lista de filmes vazia."); return; }
+        for (int i = 0; i < filmes.size(); i++) {
+            System.out.println((i + 1) + ". " + filmes.get(i).getTitulo());
+        }
+        int idx = Utils.readIntFromConsole("Escolha o filme a remover: ") - 1;
+        if (idx < 0 || idx >= filmes.size()) { System.out.println("Inválido."); return; }
+        utilizador.getListaPessoal().removerFilme(filmes.get(idx));
+        System.out.println("Filme removido da lista pessoal.");
+    }
+
+    private void adicionarEpisodioLista() {
+        Episodio ep = escolherEpisodio();
+        if (ep == null) return;
+        utilizador.getListaPessoal().adicionarEpisodio(ep);
+        System.out.println("Episódio adicionado à lista pessoal.");
+    }
+
+    private void removerEpisodioLista() {
+        ArrayList<Episodio> eps = utilizador.getListaPessoal().getEpisodios();
+        if (eps.isEmpty()) { System.out.println("Lista de episódios vazia."); return; }
+        for (int i = 0; i < eps.size(); i++) {
+            System.out.println((i + 1) + ". " + eps.get(i).getTitulo());
+        }
+        int idx = Utils.readIntFromConsole("Escolha o episódio a remover: ") - 1;
+        if (idx < 0 || idx >= eps.size()) { System.out.println("Inválido."); return; }
+        utilizador.getListaPessoal().removerEpisodio(eps.get(idx));
+        System.out.println("Episódio removido da lista pessoal.");
+    }
+
+    // Método auxiliar para navegar até um episódio
+    private Episodio escolherEpisodio() {
+        ArrayList<Serie> series = imdb.getSeries();
+        if (series.isEmpty()) { System.out.println("Não há séries."); return null; }
+        for (int i = 0; i < series.size(); i++) {
+            System.out.println((i + 1) + ". " + series.get(i).getTitulo());
+        }
+        int idxS = Utils.readIntFromConsole("Escolha a série: ") - 1;
+        if (idxS < 0 || idxS >= series.size()) { System.out.println("Inválido."); return null; }
+        ArrayList<Temporada> temps = series.get(idxS).getTemporadas();
+        if (temps.isEmpty()) { System.out.println("Série sem temporadas."); return null; }
+        for (int i = 0; i < temps.size(); i++) {
+            System.out.println((i + 1) + ". Temporada " + temps.get(i).getNumero());
+        }
+        int idxT = Utils.readIntFromConsole("Escolha a temporada: ") - 1;
+        if (idxT < 0 || idxT >= temps.size()) { System.out.println("Inválido."); return null; }
+        ArrayList<Episodio> eps = temps.get(idxT).getEpisodios();
+        if (eps.isEmpty()) { System.out.println("Temporada sem episódios."); return null; }
+        for (int i = 0; i < eps.size(); i++) {
+            System.out.println((i + 1) + ". " + eps.get(i).getTitulo()
+                    + (eps.get(i).isVisto(utilizador) ? " [VISTO]" : ""));
+        }
+        int idxE = Utils.readIntFromConsole("Escolha o episódio: ") - 1;
+        if (idxE < 0 || idxE >= eps.size()) { System.out.println("Inválido."); return null; }
+        return eps.get(idxE);
     }
 }
