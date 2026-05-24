@@ -178,6 +178,32 @@ public class DB implements Serializable {
         return atores;
     }
 
+    // Atores ordenados por número de participações (maior primeiro)
+    public ArrayList<Ator> listarAtoresPorNumFilmes() {
+        ArrayList<Ator> atores = new ArrayList<>(lstAtores);
+        Collections.sort(atores, new Comparator<Ator>() {
+            @Override
+            public int compare(Ator a1, Ator a2) {
+                return Integer.compare(contarParticipacoes(a2), contarParticipacoes(a1));
+            }
+        });
+        return atores;
+    }
+
+    // Conta participações de um ator em filmes e episódios
+    private int contarParticipacoes(Ator ator) {
+        int count = 0;
+        for (Recurso r : lstRecursos) {
+            if (r.getAtores().contains(ator)) count++;
+            if (r instanceof Serie) {
+                for (Episodio ep : ((Serie) r).getTodosEpisodios()) {
+                    if (ep.getAtores().contains(ator)) count++;
+                }
+            }
+        }
+        return count;
+    }
+
     // Espectadores ordenados por filmes vistos (maior primeiro)
     public ArrayList<Espectador> listarEspectadoresPorFilmesVistos() {
         ArrayList<Espectador> espectadores = new ArrayList<>();
