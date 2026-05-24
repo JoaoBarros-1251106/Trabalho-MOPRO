@@ -5,13 +5,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Classe central da plataforma — guarda todas as listas e gere a lógica do sistema.
+ * Implementa Serializable para persistência em ficheiro.
+ */
 public class DB implements Serializable {
 
+    /**
+     * URL da plataforma
+     */
     private String url;
+    /**
+     * Listas de utilizadores, atores e recursos (filmes e séries)
+     */
     private ArrayList<UtilizadorRegistado> lstUtilizadores;
     private ArrayList<Ator> lstAtores;
     private ArrayList<Recurso> lstRecursos;
 
+    /**
+     * Constrói a base de dados da plataforma.
+     *
+     * @param url URL da plataforma
+     */
     public DB(String url) {
         this.url = url;
         this.lstUtilizadores = new ArrayList<>();
@@ -21,10 +36,21 @@ public class DB implements Serializable {
 
     // ===== UTILIZADORES =====
 
-    public void adicionarUtilizador(UtilizadorRegistado u) {
-        lstUtilizadores.add(u);
+    /**
+     * Adiciona um utilizador registado à plataforma.
+     *
+     * @param utilizadorRegistado
+     */
+    public void adicionarUtilizador(UtilizadorRegistado utilizadorRegistado) {
+        lstUtilizadores.add(utilizadorRegistado);
     }
 
+    /**
+     * Pesquisa um utilizador pelo username.
+     *
+     * @param username username a pesquisar
+     * @return utilizador encontrado ou null se não existir
+     */
     public UtilizadorRegistado pesquisaUtilizador(String username) {
         for (UtilizadorRegistado u : lstUtilizadores) {
             if (u.temNome(username)) return u;
@@ -32,26 +58,54 @@ public class DB implements Serializable {
         return null;
     }
 
+    /**
+     * Realiza o login de um utilizador.
+     *
+     * @param username username
+     * @param password password
+     * @return utilizador autenticado ou null se credenciais inválidas
+     */
     public UtilizadorRegistado login(String username, String password) {
         UtilizadorRegistado ur = pesquisaUtilizador(username);
         if (ur != null && ur.temPassword(password)) return ur;
         return null;
     }
 
+    /**
+     * Devolve a lista de todos os utilizadores.
+     *
+     * @return lista de utilizadores
+     */
     public ArrayList<UtilizadorRegistado> getLstUtilizadores() {
         return lstUtilizadores;
     }
 
     // ===== ATORES =====
 
+    /**
+     * Adiciona um ator à plataforma.
+     *
+     * @param a ator a adicionar
+     */
     public void adicionarAtor(Ator a) {
         lstAtores.add(a);
     }
 
+    /**
+     * Remove um ator da plataforma.
+     *
+     * @param a ator a remover
+     */
     public void removerAtor(Ator a) {
         lstAtores.remove(a);
     }
 
+    /**
+     * Pesquisa um ator pelo nome exato.
+     *
+     * @param nome nome do ator
+     * @return ator encontrado ou null se não existir
+     */
     public Ator pesquisaAtor(String nome) {
         for (Ator a : lstAtores) {
             if (a.temNome(nome)) return a;
@@ -59,6 +113,12 @@ public class DB implements Serializable {
         return null;
     }
 
+    /**
+     * Pesquisa atores cujo nome contenha o texto indicado.
+     *
+     * @param texto texto a pesquisar
+     * @return lista de atores que correspondem
+     */
     public ArrayList<Ator> pesquisarAtores(String texto) {
         ArrayList<Ator> resultado = new ArrayList<>();
         for (Ator a : lstAtores) {
@@ -67,36 +127,61 @@ public class DB implements Serializable {
         return resultado;
     }
 
+    /**
+     * Devolve a lista de todos os atores.
+     *
+     * @return lista de atores
+     */
     public ArrayList<Ator> getLstAtores() {
         return lstAtores;
     }
 
     // ===== RECURSOS =====
 
-    // Adiciona recurso — lança exceção se já existir igual
-    public void adicionarRecurso(Recurso r) throws Exception {
+    /**
+     * Adiciona um recurso à plataforma.
+     *
+     * @param recurso recurso a adicionar
+     * @throws Exception se já existir um recurso com o mesmo título e ano
+     */
+    public void adicionarRecurso(Recurso recurso) throws Exception {
         for (Recurso existente : lstRecursos) {
-            if (existente.isDuplicado(r.getTitulo(), r.getAno())) {
+            if (existente.isDuplicado(recurso.getTitulo(), recurso.getAno())) {
                 throw new Exception("Já existe um recurso com o título '"
-                        + r.getTitulo() + "' e ano " + r.getAno() + ".");
+                        + recurso.getTitulo() + "' e ano " + recurso.getAno() + ".");
             }
         }
-        lstRecursos.add(r);
+        lstRecursos.add(recurso);
     }
 
-    public void removerRecurso(Recurso r) {
-        lstRecursos.remove(r);
+    /**
+     * Remove um recurso da plataforma.
+     *
+     * @param recurso recurso a remover
+     */
+    public void removerRecurso(Recurso recurso) {
+        lstRecursos.remove(recurso);
     }
 
+    /**
+     * Pesquisa recursos cujo título contenha o texto indicado.
+     *
+     * @param texto texto a pesquisar
+     * @return lista de recursos que correspondem
+     */
     public ArrayList<Recurso> pesquisarRecursos(String texto) {
         ArrayList<Recurso> resultado = new ArrayList<>();
-        for (Recurso r : lstRecursos) {
-            if (r.correspondePesquisa(texto)) resultado.add(r);
+        for (Recurso recurso : lstRecursos) {
+            if (recurso.correspondePesquisa(texto)) resultado.add(recurso);
         }
         return resultado;
     }
 
-    // Devolve só os filmes
+    /**
+     * Devolve todos os filmes da plataforma.
+     *
+     * @return lista de filmes
+     */
     public ArrayList<Filme> getFilmes() {
         ArrayList<Filme> filmes = new ArrayList<>();
         for (Recurso r : lstRecursos) {
@@ -105,7 +190,11 @@ public class DB implements Serializable {
         return filmes;
     }
 
-    // Devolve só as séries
+    /**
+     * Devolve todas as séries da plataforma.
+     *
+     * @return lista de séries
+     */
     public ArrayList<Serie> getSeries() {
         ArrayList<Serie> series = new ArrayList<>();
         for (Recurso r : lstRecursos) {
@@ -114,35 +203,60 @@ public class DB implements Serializable {
         return series;
     }
 
+    /**
+     * Devolve a lista de todos os recursos.
+     *
+     * @return lista de recursos
+     */
     public ArrayList<Recurso> getLstRecursos() {
         return lstRecursos;
     }
 
     // ===== CLASSIFICAÇÕES =====
 
-    public void classificarFilme(Filme f, Espectador e, int valor) throws Exception {
+    /**
+     * Classifica um filme por um espectador.
+     *
+     * @param filme      filme a classificar
+     * @param espectador espectador que classifica
+     * @param valor      valor entre 1 espectador 10
+     * @throws Exception se o valor for inválido, já classificou ou não viu
+     */
+    public void classificarFilme(Filme filme, Espectador espectador, int valor) throws Exception {
         if (valor < 1 || valor > 10)
-            throw new Exception("A classificação deve estar entre 1 e 10.");
-        if (!f.isVisto(e))
+            throw new Exception("A classificação deve estar entre 1 espectador 10.");
+        if (!filme.isVisto(espectador))
             throw new Exception("Só pode classificar um filme que já viu.");
-        if (f.jaClassificou(e))
+        if (filme.jaClassificou(espectador))
             throw new Exception("Já classificou este filme.");
-        f.adicionarClassificacao(new Classificacao(valor, e));
+        filme.adicionarClassificacao(new Classificacao(valor, espectador));
     }
 
-    public void classificarEpisodio(Episodio ep, Espectador e, int valor) throws Exception {
+    /**
+     * Classifica um episódio por um espectador.
+     *
+     * @param episodio   episódio a classificar
+     * @param espectador espectador que classifica
+     * @param valor      valor entre 1 e 10
+     * @throws Exception se o valor for inválido, já classificou ou não viu
+     */
+    public void classificarEpisodio(Episodio episodio, Espectador espectador, int valor) throws Exception {
         if (valor < 1 || valor > 10)
             throw new Exception("A classificação deve estar entre 1 e 10.");
-        if (!ep.isVisto(e))
+        if (!episodio.isVisto(espectador))
             throw new Exception("Só pode classificar um episódio que já viu.");
-        if (ep.jaClassificou(e))
+        if (episodio.jaClassificou(espectador))
             throw new Exception("Já classificou este episódio.");
-        ep.adicionarClassificacao(new Classificacao(valor, e));
+        episodio.adicionarClassificacao(new Classificacao(valor, espectador));
     }
 
     // ===== ORDENAÇÕES =====
 
-    // Filmes ordenados por título (A-Z)
+    /**
+     * Devolve a lista de filmes ordenada por título (A-Z).
+     *
+     * @return lista de filmes ordenada por título
+     */
     public ArrayList<Filme> listarFilmesPorTitulo() {
         ArrayList<Filme> filmes = getFilmes();
         Collections.sort(filmes, new Comparator<Filme>() {
@@ -154,7 +268,11 @@ public class DB implements Serializable {
         return filmes;
     }
 
-    // Filmes ordenados por classificação (maior primeiro)
+    /**
+     * Devolve a lista de filmes ordenada por classificação média (decrescente).
+     *
+     * @return lista de filmes ordenada por classificação
+     */
     public ArrayList<Filme> listarFilmesPorClassificacao() {
         ArrayList<Filme> filmes = getFilmes();
         Collections.sort(filmes, new Comparator<Filme>() {
@@ -166,7 +284,11 @@ public class DB implements Serializable {
         return filmes;
     }
 
-    // Atores ordenados por nome (A-Z)
+    /**
+     * Devolve a lista de atores ordenada por nome (A-Z).
+     *
+     * @return lista de atores ordenada por nome
+     */
     public ArrayList<Ator> listarAtoresPorNome() {
         ArrayList<Ator> atores = new ArrayList<>(lstAtores);
         Collections.sort(atores, new Comparator<Ator>() {
@@ -178,7 +300,11 @@ public class DB implements Serializable {
         return atores;
     }
 
-    // Atores ordenados por número de participações (maior primeiro)
+    /**
+     * Devolve a lista de atores ordenada por número de participações (decrescente).
+     *
+     * @return lista de atores ordenada por participações
+     */
     public ArrayList<Ator> listarAtoresPorNumFilmes() {
         ArrayList<Ator> atores = new ArrayList<>(lstAtores);
         Collections.sort(atores, new Comparator<Ator>() {
@@ -190,7 +316,12 @@ public class DB implements Serializable {
         return atores;
     }
 
-    // Conta participações de um ator em filmes e episódios
+    /**
+     * Conta o número de participações de um ator em filmes e episódios.
+     *
+     * @param ator ator a contar
+     * @return número de participações
+     */
     private int contarParticipacoes(Ator ator) {
         int count = 0;
         for (Recurso r : lstRecursos) {
@@ -204,11 +335,15 @@ public class DB implements Serializable {
         return count;
     }
 
-    // Espectadores ordenados por filmes vistos (maior primeiro)
+    /**
+     * Devolve a lista de espectadores ordenada por filmes vistos (decrescente).
+     *
+     * @return lista de espectadores ordenada
+     */
     public ArrayList<Espectador> listarEspectadoresPorFilmesVistos() {
         ArrayList<Espectador> espectadores = new ArrayList<>();
-        for (UtilizadorRegistado u : lstUtilizadores) {
-            if (u instanceof Espectador) espectadores.add((Espectador) u);
+        for (UtilizadorRegistado utilizadorRegistado : lstUtilizadores) {
+            if (utilizadorRegistado instanceof Espectador) espectadores.add((Espectador) utilizadorRegistado);
         }
         Collections.sort(espectadores, new Comparator<Espectador>() {
             @Override
@@ -219,17 +354,27 @@ public class DB implements Serializable {
         return espectadores;
     }
 
-    // Conta filmes vistos por um espectador
-    private int contarFilmesVistos(Espectador e) {
+    /**
+     * Conta o número de filmes vistos por um espectador.
+     *
+     * @param espectador espectador a contar
+     * @return número de filmes vistos
+     */
+    private int contarFilmesVistos(Espectador espectador) {
         int count = 0;
         for (Filme f : getFilmes()) {
-            if (f.isVisto(e)) count++;
+            if (f.isVisto(espectador)) count++;
         }
         return count;
     }
 
     // ===== LISTAGENS =====
 
+    /**
+     * Devolve a lista de utilizadores formatada.
+     *
+     * @return string com todos os utilizadores
+     */
     public String listarUtilizadores() {
         StringBuilder sb = new StringBuilder("\nLista de Utilizadores:");
         if (lstUtilizadores.isEmpty()) {
@@ -243,6 +388,11 @@ public class DB implements Serializable {
         return sb.toString();
     }
 
+    /**
+     * Devolve a lista de atores formatada.
+     *
+     * @return string com todos os atores
+     */
     public String listarAtores() {
         StringBuilder sb = new StringBuilder("\nLista de Atores:");
         if (lstAtores.isEmpty()) {
@@ -255,6 +405,11 @@ public class DB implements Serializable {
         return sb.toString();
     }
 
+    /**
+     * Devolve a lista de recursos formatada.
+     *
+     * @return string com todos os recursos
+     */
     public String listarRecursos() {
         StringBuilder sb = new StringBuilder("\nLista de Recursos:");
         if (lstRecursos.isEmpty()) {
@@ -269,6 +424,11 @@ public class DB implements Serializable {
         return sb.toString();
     }
 
+    /**
+     * Devolve o estado completo da plataforma.
+     *
+     * @return string com utilizadores, atores e recursos
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("=== Estado atual da DB ===\n");
